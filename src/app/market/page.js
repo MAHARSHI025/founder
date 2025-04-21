@@ -3,11 +3,9 @@ import React from 'react'
 import Maincard from '../components/Maincard'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import Profileimage from '../components/Profieimage'
 
 
-
-function page() {
+function Page() {
 
 
   const { data: session, status } = useSession()
@@ -30,4 +28,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
