@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { useSession } from 'next-auth/react'
 
 // Connect to the backend server
-const socket = io("https://founder-socket.vercel.app/");
+const socket = io("https://founder-socket.onrender.com");
 // const socket = io("http://localhost:5000");
 
 function Socket() {
