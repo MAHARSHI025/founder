@@ -4,12 +4,13 @@ import { io } from "socket.io-client";
 import { useSession } from 'next-auth/react'
 
 // Connect to the backend server
-const socket = io("http://localhost:5000");
+const socket = io("https://founder-socket.vercel.app/");
+// const socket = io("http://localhost:5000");
 
 function Socket() {
     const { data: session, status } = useSession();
-    const [chat, setChat] = useState("");  // Message input state
-    const [messages, setMessages] = useState([]);  // List of all messages
+    const [chat, setChat] = useState("");  
+    const [messages, setMessages] = useState([]);  
 
     // Handle sending the chat message
     const sendChat = () => {

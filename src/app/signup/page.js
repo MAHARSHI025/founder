@@ -41,9 +41,9 @@ function Page() {
 
     return (
         <div className='text-center h-screen pb-20 items-center flex flex-col justify-center'>
-            <h1 className='text-2xl font-semibold'>Signup</h1>
+            <h1 className='text-2xl font-semibold'>SignIn</h1>
             <Loginform />
-            <p>or</p>
+            <p>or SignUp with</p>
 
             <Auther />
         </div>

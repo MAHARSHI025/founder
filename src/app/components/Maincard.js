@@ -11,7 +11,7 @@ function Maincard() {
 
     const fetchUsers = async (pageNum) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/users/getusers?page=${pageNum}`);
+            const response = await fetch(`/api/users/getusers?page=${pageNum}`);
             const data = await response.json();
             console.log(data.user);
 
