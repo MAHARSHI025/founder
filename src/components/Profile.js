@@ -1,5 +1,5 @@
 import { signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Uploadimage from './Uploadimage';
 import Card from './Card';
 
