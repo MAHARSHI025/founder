@@ -5,10 +5,9 @@ import dynamic from "next/dynamic";
 const Signup = dynamic(() => import('@/components/Signup'), { ssr: false });
 
 import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-function layout({ children }) {
+function Layout({ children }) {
 
     const { data: session, status } = useSession();
     const [action, setaction] = useState('signup');
@@ -37,4 +36,4 @@ function layout({ children }) {
     )
 }
 
-export default layout
+export default Layout

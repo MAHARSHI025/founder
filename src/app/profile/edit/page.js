@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-function page() {
+function Page() {
     const router = useRouter()
 
     const { data: session, status } = useSession();
@@ -135,4 +135,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

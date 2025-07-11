@@ -22,12 +22,12 @@ export default function Home() {
   }
   return (
     <>
-    <div className=" cursor-none hd w-full h-full">
-      
-      <SmoothCursor />
-      {/* <Globe /> */}
-      {/* <Card /> */}
-    </div>
+      <div className=" cursor-none hd w-full h-full">
+
+        <SmoothCursor />
+        {/* <Globe /> */}
+        {/* <Card /> */}
+      </div>
     </>
   );
 }

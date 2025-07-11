@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-function page() {
+function Page() {
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -112,4 +112,4 @@ function page() {
 
 }
 
-export default page
+export default Page
