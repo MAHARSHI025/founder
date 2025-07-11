@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000"); // your backend URL
+console.log(process.env.BACKEND_URL);
+
+const socket = io('https://founder-backend-l3na.onrender.com'); //production url
+// const socket = io('https://localhost:5000'); // developing backend URL
 
 export default function ChatPage() {
   const { data: session, status } = useSession();
