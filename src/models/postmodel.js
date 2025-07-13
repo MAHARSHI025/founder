@@ -8,12 +8,15 @@ const postSchema = new mongoose.Schema({
     },
     postimage: {
         type: String,
-        // required: true,
-        default: "hello.png"
+        required: true,
+    },
+    imageid: {
+        type: String,
+        required: true,
     },
     description: {
         type: String,
-        // required: true,
+        required: true,
     },
     likecount: {
         type: Number,

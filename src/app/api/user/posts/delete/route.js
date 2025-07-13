@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
-import User from "@/models/usermodel";
-import bcryptjs from "bcryptjs";
 import Post from "@/models/postmodel";
+import cloudinary from "@/lib/cloudinary";
 
 connect();
 
@@ -10,28 +9,46 @@ export async function POST(req) {
     try {
         const body = await req.json();
         const { id } = body;
-        console.log("Post data from frontend", { id });
+        console.log(id);
+
 
         if (!id) {
             return NextResponse.json(
-                { message: 'Post id is required.' },
+                { message: "Post id is required." },
                 { status: 400 }
             );
         }
 
-        const existingPost = await Post.findByIdAndDelete(id);
+        const existingPost = await Post.findById(id);
+
         if (!existingPost) {
-            return NextResponse.json({ error: "Post not found" }, { status: 400 });
+            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+        }
+        
+
+
+        const result = await cloudinary.uploader.destroy(existingPost.imageid);
+
+        if (result.result !== "ok") {
+            return NextResponse.json(
+                { error: "Failed to delete image from Cloudinary" },
+                { status: 500 }
+            );
         }
 
+        await Post.findByIdAndDelete(id);
 
-        return NextResponse.json({
-            message: "Delete post successfully",
-            existingPost,
-        }, { status: 200 });
-
+        return NextResponse.json(
+            {
+                message: "Post and image deleted successfully",
+            },
+            { status: 200 }
+        );
     } catch (error) {
-        console.error("Post get:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("Delete Post Error:", error);
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
+        );
     }
 }

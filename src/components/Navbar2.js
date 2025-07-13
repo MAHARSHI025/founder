@@ -33,7 +33,8 @@ function Navbar2() {
                         <HoveredLink href="/profile/edit">Edit</HoveredLink>
                         <HoveredLink href="/profile/posts">Posts</HoveredLink>
                         <HoveredLink href="/profile/updateimage">Edit image</HoveredLink>
-                        <button onClick={() => signOut()} className=' bg-red-800 px-3 py-1 rounded-xl cursor-pointer  '>Signout</button>
+                        <HoveredLink href="/contact">Contacts</HoveredLink>
+                        <button onClick={() => signOut()} className=' bg-red-800 px-3 py-1 rounded-lg cursor-pointer  '>Signout</button>
                     </div>
                 </MenuItem>
             </Menu>

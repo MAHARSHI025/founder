@@ -161,3 +161,6 @@
 .hd{
   cursor: none !important;
 }
+.scrollbar-hide{
+  scrollbar-width: none;
+}

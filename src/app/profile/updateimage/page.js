@@ -11,15 +11,15 @@ function Page() {
 
   const [user, setUser] = useState({});
   const [link, setlink] = useState("");
+  const [profileFile, setProfileFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
 
-  // ✅ Always call this
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/profile");
     }
   }, [status, router]);
 
-  // ✅ Always call this
   useEffect(() => {
     const fetchUser = async () => {
       if (!session?.user?.email) return;
@@ -35,13 +35,8 @@ function Page() {
     fetchUser();
   }, [session?.user?.email]);
 
-  const uploadfile = async (e, type) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      return console.error("No files selected.");
-    }
-
-    const file = e.target.files[0];
-    if (!file) return;
+  const uploadFile = async (file, type) => {
+    if (!file) return console.error("No file selected.");
 
     const formData = new FormData();
     formData.append("image", file);
@@ -68,44 +63,53 @@ function Page() {
     }
   };
 
-  // ✅ Move conditional return to here, AFTER all hooks
   const isLoading = status === "loading";
 
   return (
-    <div className="flex justify-center items-center flex-col m-10">
-      <div className="border-2 border-gray-200 text-center w-auto rounded-2xl flex justify-center items-center flex-col p-4 gap-4">
+    <div className="flex justify-center items-center flex-col mt-4 ">
+      <div className="flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg  min-w-80 shadow-lg">
         {isLoading ? (
           <p>Loading...</p>
         ) : (
           <>
-            <div>
-              <h1>Hello</h1>
-              <h1>{session?.user?.email}</h1>
-            </div>
+            <h1 className="text-2xl font-bold text-center mb-3">Update image</h1>
 
-            <div className="text-left">
+            <div className="text-left mb-10">
               <h1>Profile image</h1>
-              <img src={user?.profileimage} className="h-20" alt="Profile" />
+              <img src={user?.profileimage} className="h-20 mb-2" alt="Profile" />
               <input
                 type="file"
-                onChange={(e) => uploadfile(e, "profile")}
-                className="border rounded-lg p-1"
+                onChange={(e) => setProfileFile(e.target.files[0])}
+                className="border rounded-lg p-1 mb-2"
               />
+              <button
+                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full"
+                onClick={() => uploadFile(profileFile, "profile")}
+              >
+                Upload Profile Image
+              </button>
             </div>
 
-            <div className="text-left">
+            <div className="text-left mb-8">
               <h1>Cover image</h1>
-              <img src={user?.coverimage} className="h-20" alt="Cover" />
+              <img src={user?.coverimage} className="h-20 mb-2" alt="Cover" />
               <input
                 type="file"
-                onChange={(e) => uploadfile(e, "cover")}
-                className="border rounded-lg p-1"
+                onChange={(e) => setCoverFile(e.target.files[0])}
+                className="border rounded-lg p-1 mb-2"
               />
+              <button
+
+                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full"
+                onClick={() => uploadFile(coverFile, "cover")}
+              >
+                Upload Cover Image
+              </button>
             </div>
 
             <button
               onClick={() => router.push("/profile")}
-              className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full"
+              className="bg-white text-black border-black border p-2 rounded-2xl  mt-2 cursor-pointer w-full"
             >
               Back
             </button>

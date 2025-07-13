@@ -10,6 +10,7 @@ function Uploadpost({ setaction }) {
     const router = useRouter();
 
     const [link, setlink] = useState("");
+    const [imgid, setimgid] = useState("");
     const [description, setdescription] = useState("");
     const [fileUploading, setFileUploading] = useState(false);
     const [error, setError] = useState("");
@@ -37,6 +38,7 @@ function Uploadpost({ setaction }) {
             const response = await axios.post("/api/upload", formData);
 
             setlink(response.data.url);
+            setimgid(response.data.public_id)
             setError("");
         } catch (error) {
             console.error("Upload failed:", error);
@@ -51,6 +53,10 @@ function Uploadpost({ setaction }) {
             setError("Please upload an image first.");
             return;
         }
+        if (!imgid) {
+            setError("Please upload an image first.");
+            return;
+        }
 
         if (!description.trim()) {
             setError("Please enter a description.");
@@ -62,11 +68,12 @@ function Uploadpost({ setaction }) {
                 email: session?.user.email,
                 img_url: link,
                 description,
+                img_id: imgid
             });
 
             console.log("Post created:", setpost.data);
             setError("");
-            setaction("posts"); // Go back after successful post
+            setaction("posts");
         } catch (error) {
             console.error("Error creating post:", error);
             setError("Failed to create post.");

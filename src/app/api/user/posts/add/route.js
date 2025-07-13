@@ -9,10 +9,11 @@ connect();
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email, img_url, description } = body;
-        console.log("Post data from frontend", { email, img_url, description });
+        const { email, img_url, img_id,description } = body;
+        
+        console.log("Post data from frontend", { email, img_url, img_id ,description });
 
-        if (!email || !img_url || !description) {
+        if (!email || !img_url || !description || !img_id) {
             return NextResponse.json(
                 { message: 'All fields are required.' },
                 { status: 400 }
@@ -27,7 +28,8 @@ export async function POST(req) {
         const newpost = await Post.create({
             email: email,
             postimage: img_url,
-            description: description
+            description: description,
+            imageid: img_id
         })
         if (!newpost) {
             console.log("error while create new post");
@@ -48,8 +50,9 @@ export async function POST(req) {
             message: "add post successful",
             updatedUser
         }, { status: 200 });
+
     } catch (error) {
-        console.error("Signup Error:", error);
+        console.error("Error: while controler", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }

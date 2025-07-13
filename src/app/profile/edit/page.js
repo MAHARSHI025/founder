@@ -71,7 +71,7 @@ function Page() {
 
     return (
 
-        <div className=' flex flex-col items-center p-2'>
+        <div className=' flex flex-col items-center p-2 '>
 
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg drop-shadow-2xl min-w-80'>

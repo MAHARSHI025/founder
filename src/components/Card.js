@@ -29,8 +29,8 @@ function Card() {
 
 
     return (
-        <div className='h-80% top-0 left-0 right-0 bottom-0 flex justify-center items-center m-4 shadow-2xl'>
-            <div className="profile-card flex justify-center items-center flex-col bg-white shadow-md rounded-2xl max-w-sm mx-auto">
+        <div className='h-80% top-0 left-0 right-0 bottom-0 flex justify-center items-center m-4 '>
+            <div className="profile-card flex justify-center items-center flex-col bg-white shadow-md rounded-2xl max-w-sm mx-auto shadow-2xl">
                 <div className="flex flex-col ">
 
                     <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">

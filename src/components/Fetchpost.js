@@ -30,8 +30,9 @@ function Fetchpost() {
 
     const deletepost = async (id) => {
         try {
+            console.log("post id for delete route from frontend",id);
+            
             await axios.post("/api/user/posts/delete", { id });
-            // ✅ Re-fetch posts after deletion
             setData((prev) => ({
                 ...prev,
                 findpost: prev.findpost.filter((post) => post._id !== id),
@@ -42,7 +43,7 @@ function Fetchpost() {
     };
 
     if (status === "loading" || !session?.user?.email) {
-        return <p>Loading...</p>; // ✅ prevent premature render
+        return <p>Loading...</p>;
     }
 
     return (

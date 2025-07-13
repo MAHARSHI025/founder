@@ -29,6 +29,9 @@ export async function POST(req) {
 
     const result = await streamUpload(buffer);
 
+    console.log("public id in backend",result.public_id);
+    
+
     return NextResponse.json({
       message: "Image uploaded successfully",
       url: result.secure_url,
