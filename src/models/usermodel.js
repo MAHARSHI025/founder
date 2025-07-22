@@ -45,10 +45,6 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     }],
-    // contacts: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Contact',
-    // }],
     badges: {
         type: Array,
         default: []
@@ -59,7 +55,7 @@ const userSchema = new mongoose.Schema({
     },
     city: {
         type: String,
-        // required: true,
+        required: true,
     },
     likecount: {
         type: Number,

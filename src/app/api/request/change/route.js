@@ -1,37 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
-import User from "@/models/usermodel";
-import Contact from "@/models/contactmodel";
+import Request from "@/models/requestmodel";
 
 connect();
 
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email } = body;
+        const { id } = body;
 
-        if (!email) {
+        if (!id) {
             return NextResponse.json(
                 { message: 'All fields are required.' },
                 { status: 400 }
             );
         }
 
-        const details = await User.findOne({ email: email }).populate("contacts","", Contact);
-        if (!details) {
-            return NextResponse.json({ message: "user not found" }, { status: 400 });
+        const deleterequest = await Request.findByIdAndDelete(id)
+        if (!deleterequest) {
+             return NextResponse.json(
+                { message: 'Error in delete request' },
+                { status: 400 }
+            );
         }
 
 
+
         return NextResponse.json({
-            message: "user contacts fetch successfully",
-            data: details.contacts
+            message: "request add successfully",
+            deleterequest
         }, { status: 200 });
 
     } catch (error) {
         console.error("Update Contact Error:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
-}  
-
-
+}

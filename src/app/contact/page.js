@@ -2,11 +2,13 @@
 import Contactcard from '@/components/Contactcard'
 import axios from 'axios'
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 function Page() {
   const { data: session } = useSession();
   const [data, setData] = useState([]);
+  const router = useRouter()
 
   useEffect(() => {
     const getContacts = async () => {
@@ -16,7 +18,7 @@ function Page() {
         const response = await axios.post("/api/contact/get", {
           email: session.user.email,
         });
-        console.log("API data:", response.data.data); // check the array
+        console.log("API data:", response.data);
         setData(response.data.data);
       } catch (err) {
         console.error("Error fetching contacts", err);
@@ -27,12 +29,16 @@ function Page() {
   }, [session]);
 
   return (
-    <div>
-      <h1>hello</h1>
+    <div className='flex flex-col mx-auto max-w-2xl border border-gray-300 p-6 py-10 rounded-lg mt-6 relative'>
+      <button className=' absolute top-2 right-5' onClick={() => { router.push("/contact/request") }}><span className="material-symbols-outlined">
+        group_add
+      </span></button>
+      <h1 className='text-2xl font-bold text-center mb-3'>Contacts</h1>
+
       <div className='flex justify-center items-center flex-col gap-4'>
         {data.length > 0 ? (
-          data.map((email, index) => (
-            <Contactcard key={index} email={email} />
+          data.map((data, index) => (
+            <Contactcard key={index} email={data.sender_email} />
           ))
         ) : (
           <p>No contacts found</p>

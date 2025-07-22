@@ -6,7 +6,7 @@ function Contactcard({ email, organization_name, city }) {
   const router = useRouter()
 
   return (
-    <div className='min-w-[30%] max-w-xl border-neutral-600 border p-4 rounded-2xl flex justify-between'>
+    <div className='min-w-[30%] max-w-xl border-neutral-600 border p-4 rounded-2xl flex justify-between flex-wrap gap-8'>
       <div className=' flex gap-4 items-center '>
 
         <div>
@@ -18,17 +18,13 @@ function Contactcard({ email, organization_name, city }) {
           <h1>{city}</h1>
         </div>
       </div>
-      <div className='flex gap-4 justify-center items-center'>
+      <div className='flex gap-2 justify-center items-center'>
         <button className=' flex cursor-pointer'><span className="material-symbols-outlined text-sm text-neutral-300" style={{
           fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 30"
         }}>
           delete
         </span></button>
-        <button className=' flex cursor-pointer'><span className="material-symbols-outlined text-sm text-neutral-300" style={{
-          fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 30"
-        }}>
-          account_circle
-        </span></button>
+   
         <button className=' flex cursor-pointer' onClick={()=>router.push(`/chat?email=${encodeURIComponent(email)}`)}><span className="material-symbols-outlined text-sm text-neutral-300" style={{
           fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 30"
         }}>

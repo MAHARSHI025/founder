@@ -20,8 +20,8 @@ export default function ChatPage() {
   const urlemail = searchParams.get('email');
   // console.log(urlemail);
 
-  
-  
+
+
   useEffect(() => {
     if (session?.user?.email) {
       socket.emit("join", session.user.email);
@@ -30,13 +30,13 @@ export default function ChatPage() {
     socket.on("receive_message", (data) => {
       setChat((prev) => [...prev, data]);
     });
-    
+
     return () => {
       socket.off("receive_message");
     };
   }, [session]);
-  
-  
+
+
   const sendMessage = (e) => {
     e.preventDefault();
     setreceiver_email(urlemail)
@@ -54,7 +54,7 @@ export default function ChatPage() {
   return (
     <div className="flex justify-center items-center flex-col">
       <div className="flex justify-center items-center w-screen flex-col">
-      <Chattopsection email={urlemail}/>
+        <Chattopsection email={urlemail} />
         <Scrollhandle trigger={chat.length}>
 
 
@@ -76,7 +76,7 @@ export default function ChatPage() {
                 <h5
                   style={{
                     display: "flex",
-                    fontWeight:"500",
+                    fontWeight: "500",
                     justifyContent:
                       msg.sender_email === session?.user?.email
                         ? "right"
@@ -110,39 +110,28 @@ export default function ChatPage() {
 
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center ">
         <form
           onSubmit={sendMessage}
-         
-          className="fixed pb-1 bottom-0 max-w-[80%] bg-white"
-          
+          className="fixed pb-1 bottom-0  bg-white w-[calc(100vw-10px)] flex justify-center items-center mb-4"
+
         >
-          {/* <input
-            type="email"
-            placeholder="Receiver's Email"
-            value={receiver_email}
-            onChange={(e) => setreceiver_email(e.target.value)}
+          <input
+            type="text"
+            name="organization_name"
+            autoComplete="off"
+            placeholder="Enter message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             required
-            className="border rounded-lg mb-2 px-4 py-2 border-gray-400 w-[80%] mr-1"
-          /> */}
-          <div className="flex">
-            <input
-              type="text"
-              name="organization_name"
-              autoComplete="off"
-              placeholder="Enter message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-              className="border rounded-lg mb-2 px-4 py-2 border-gray-400   mr-1"
-            />
-            <button
-              type="submit"
-              className="bg-black text-white rounded-full px-6 py-2"
-            >
-              Send
-            </button>
-          </div>
+            className="border rounded-lg  px-4 py-2 w-[calc(100vw-10px)] max-w-[300px] border-gray-400  mr-1"
+          />
+          <button
+            type="submit"
+            className="bg-black text-white rounded-full px-6 py-2"
+          >
+            Send
+          </button>
         </form>
       </div>
     </div>

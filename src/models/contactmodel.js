@@ -2,20 +2,23 @@ import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema({
 
+    sender_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     sender_email: {
         type: String,
         required: true,
+    },
+    receiver_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     receiver_email: {
         type: String,
         required: true,
     },
-    status: {
-        type: Boolean,
-        required: true,
-        default: false
-    }
-    
+
 }, {
     timestamps: true
 }

@@ -13,13 +13,8 @@ function Navbar2() {
             <Menu setActive={setActive} >
 
                 <Link href={"/"}>Home</Link>
+                <Link href={"/market"}>Market</Link>
 
-
-                <MenuItem item="Market" active={active} setActive={setActive}>
-                    <div>
-                        <HoveredLink href="/">Our Story</HoveredLink>
-                    </div>
-                </MenuItem>
                 <MenuItem item="About" active={active} setActive={setActive}>
                     <div className="flex flex-col space-y-2 ">
                         <HoveredLink href="/about">Our Story</HoveredLink >

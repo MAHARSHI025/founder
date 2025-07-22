@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/usermodel";
-import Contact from "@/models/contactmodel";
+import Request from "@/models/requestmodel";
 
 connect();
 
@@ -27,23 +27,17 @@ export async function POST(req) {
             return NextResponse.json({ message: "Receiver not found" }, { status: 400 });
         }
 
-        const newContact = new Contact({
+        const newRequest = new Request({
             sender_id: sender._id,
-            sender_email:sender.email,
             receiver_id: receiver._id,
-            receiver_email: receiver.email
+            status: false
         });
 
-        await newContact.save();
-
-        sender.contacts.push(newContact._id);
-        await sender.save(); 
-        receiver.contacts.push(newContact._id);
-        await receiver.save(); 
+        await newRequest.save();
 
         return NextResponse.json({
-            message: "Contact updated successfully",
-            contact: newContact
+            message: "request add successfully",
+            newRequest
         }, { status: 200 });
 
     } catch (error) {

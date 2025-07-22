@@ -154,13 +154,21 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-.hd{
+
+.hd {
   cursor: none !important;
 }
-.scrollbar-hide{
+
+.scrollbar-hide {
   scrollbar-width: none;
 }
+
+* {
+  font-family: 'Geist', sans-serif;
+}
+
