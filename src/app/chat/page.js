@@ -7,7 +7,7 @@ import Scrollhandle from "@/components/Scrollhandle";
 import { useSearchParams } from "next/navigation";
 import Chattopsection from "@/components/Chattopsection";
 
-export default function ChatPage() {
+export default function Page() {
   const { data: session } = useSession();
   const [message, setMessage] = useState("");
   const [receiver_email, setreceiver_email] = useState("");
