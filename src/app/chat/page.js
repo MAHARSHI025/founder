@@ -81,7 +81,6 @@ export default function ChatPage() {
     setreceiver_email(urlemail);
 
     if (!message || !urlemail || !session?.user?.email) return;
-
     socketRef.current.emit("send_message", {
       sender_email: session.user.email,
       receiver_email: urlemail,
