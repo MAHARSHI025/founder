@@ -8,4 +8,4 @@ function Loading() {
   )
 }
 
-export default loading
+export default Loading
