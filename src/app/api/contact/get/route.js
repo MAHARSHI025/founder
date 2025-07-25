@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
-import User from "@/models/usermodel";
+
 import Contact from "@/models/contactmodel";
+import User from "@/models/usermodel";
 
 connect();
 
@@ -17,7 +18,7 @@ export async function POST(req) {
             );
         }
 
-        const details = await User.findOne({ email: email }).populate("contacts","", Contact);
+        const details = await Contact.find({ receiver_email: email }).populate("sender_id","-password -post -contacts", User);
         if (!details) {
             return NextResponse.json({ message: "user not found" }, { status: 400 });
         }
@@ -25,7 +26,7 @@ export async function POST(req) {
 
         return NextResponse.json({
             message: "user contacts fetch successfully",
-            data: details.contacts
+            details
         }, { status: 200 });
 
     } catch (error) {

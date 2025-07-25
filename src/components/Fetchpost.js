@@ -10,7 +10,7 @@ function Fetchpost() {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                if (!session?.user?.email) return; // ✅ safety check
+                if (!session?.user?.email) return; 
 
                 const response = await axios.post("/api/user/posts/get", {
                     email: session.user.email,
@@ -58,7 +58,7 @@ function Fetchpost() {
                                 </span>
                             </button>
                             <div className="text-left mt-8">
-                                <img src={res.postimage} alt="" className='rounded-2xl' />
+                                <img src={res.postimage} alt="" className='rounded-2xl object-cover' />
                                 <h5 className='text-sm text-neutral-600 my-2'>{res.createdAt.split("T")[0]}</h5>
                                 <h3>{res.description}</h3>
                             </div>

@@ -16,9 +16,10 @@ export default function Home() {
   return (
     <>
       <div className=" flex flex-col  justify-center items-center h-[80vh] gap-2">
-        <div className="flex flex-col  justify-center items-center gap-8">
+        <div className="flex flex-col  justify-center items-center gap-8  text-center">
 
-          <div className=" flex justify-center items-center gap-1 text-6xl font-semibold flex-wrap ">
+          <div className="flex justify-center items-center gap-1 text-[30px] sm:text-6xl font-semibold flex-wrap">
+
             Wlc to the
             <div className="relative ">
 
@@ -36,17 +37,17 @@ export default function Home() {
           </div>
 
           <div>
-            <h1 className=" text-xl">a platform that provide a B-to-B connection</h1>
+            <h1 className=" text-[10px] sm:text-xl">a platform that provide a B-to-B connection</h1>
           </div>
         </div>
 
         <div className=" flex  justify-center gap-2">
-          <Link href={"/"} className=" border-b border-b-black">Get started</Link>
+          <Link href={"/market"} className=" border-b border-b-black">Get started</Link>
           <Link href={"/"} className=" border-b border-b-black">Read docs</Link>
         </div>
 
         <div className="fixed bottom-4">
-          <h1 className=" text-neutral-600">Founder by thoughter</h1>
+          <h1 className=" text-neutral-400">Founder by thoughter</h1>
         </div>
       </div>
     </>

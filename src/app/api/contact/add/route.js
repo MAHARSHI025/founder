@@ -10,6 +10,9 @@ export async function POST(req) {
         const body = await req.json();
         const { sender_id, receiver_id } = body;
 
+        console.log(sender_id,receiver_id);
+        
+
         if (!sender_id || !receiver_id) {
             return NextResponse.json(
                 { message: 'All fields are required.' },
