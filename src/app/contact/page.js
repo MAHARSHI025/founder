@@ -1,5 +1,6 @@
 "use client"
 import Contactcard from '@/components/Contactcard'
+import MainLoader from '@/components/MainLoader';
 import axios from 'axios'
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -8,10 +9,12 @@ import React, { useEffect, useState } from 'react'
 function Page() {
   const { data: session } = useSession();
   const [data, setData] = useState([]);
+  const [loading, setloading] = useState(false);
 
   const router = useRouter()
 
   useEffect(() => {
+    setloading(true)
     const getContacts = async () => {
       if (!session?.user?.email) return;
 
@@ -23,6 +26,8 @@ function Page() {
         setData(response.data.details);
       } catch (err) {
         console.error("Error fetching contacts", err);
+      } finally {
+        setloading(false)
       }
     };
 
@@ -31,7 +36,8 @@ function Page() {
 
 
 
-  return (
+
+  return loading ? <MainLoader /> : (
     <div className='flex flex-col mx-auto max-w-2xl border border-gray-300 p-6 py-10 rounded-lg mt-6 relative'>
       <button className=' absolute top-2 right-5' onClick={() => { router.push("/contact/request") }}><span className="material-symbols-outlined">
         group_add

@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <div className=" flex flex-col  justify-center items-center h-[80vh] gap-2">
-        <div className="flex flex-col  justify-center items-center gap-8  text-center">
+        <div className="flex flex-col  justify-center items-center gap-4 sm:gap-8  text-center">
 
           <div className="flex justify-center items-center gap-1 text-[30px] sm:text-6xl font-semibold flex-wrap">
 

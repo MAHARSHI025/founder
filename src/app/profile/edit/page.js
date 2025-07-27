@@ -71,7 +71,7 @@ function Page() {
 
     return (
 
-        <div className=' flex flex-col items-center p-2 '>
+        <div className=' flex flex-col items-center p-2 m-2'>
 
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg drop-shadow-2xl min-w-80'>
@@ -87,7 +87,7 @@ function Page() {
                     </div>
 
 
-                    <div className=' flex gap-2  justify-center'>
+                    <div className=' flex gap-2  justify-center flex-wrap lg:flex-nowrap'>
 
                         <div className=' flex flex-col'>
                             <label htmlFor="city" className=' text-xs text-neutral-700' >Organization name</label>
