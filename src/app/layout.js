@@ -6,6 +6,7 @@ import Navbar2 from "@/components/Navbar2.js";
 import { Suspense } from "react";
 import MainLoader from "@/components/MainLoader";
 import Wrapper from "@/components/Wrapper";
+import Script from "next/script";
 
 export const metadata = {
   title: "Founder by thoughter",
@@ -22,22 +23,23 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
         <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"></link>
 
-        <script
+        <Script
           src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
           type="module"
-        ></script>
+          strategy="afterInteractive" // recommended for non-blocking
+        />
       </head>
       <body>
         <Session>
           <Toaster />
           <Suspense fallback={<MainLoader />}>
-          <Wrapper>
+            <Wrapper>
 
 
-            {/* <Navbar /> */}
+              {/* <Navbar /> */}
 
-            {children}
-          </Wrapper>
+              {children}
+            </Wrapper>
           </Suspense>
         </Session>
       </body>
