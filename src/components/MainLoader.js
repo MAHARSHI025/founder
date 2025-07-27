@@ -1,12 +1,15 @@
 import React from 'react'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 
 function MainLoader() {
     return (
-        <div className="flex justify-center items-center h-[80vh] w-screen bg-white z-50">
-            <iframe
-                src="https://lottie.host/embed/f48ee489-6541-4c16-8c54-127539b52af8/f95AhYUc6j.lottie"
-                className="h-72 w-72 border-none"
-            ></iframe>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+            <div className="flex space-x-2">
+                <div className="w-5 h-5 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-5 h-5 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-5 h-5 bg-black rounded-full animate-bounce"></div>
+            </div>
         </div>
     )
 }

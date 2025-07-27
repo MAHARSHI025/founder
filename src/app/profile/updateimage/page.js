@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import MainLoader from "@/components/MainLoader";
 
 function Page() {
   const { data: session, status } = useSession();
@@ -13,6 +14,7 @@ function Page() {
   const [link, setlink] = useState("");
   const [profileFile, setProfileFile] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -44,6 +46,7 @@ function Page() {
     formData.append("type", type);
 
     try {
+      setUploading(true);
       const response = await axios.post("/api/upload", formData);
       const imageUrl = response.data.url;
       setlink(imageUrl);
@@ -60,14 +63,18 @@ function Page() {
       }));
     } catch (error) {
       console.error("Upload error:", error);
+    } finally {
+      setUploading(false);
     }
   };
 
   const isLoading = status === "loading";
 
+  if (uploading || status === "loading") return <MainLoader />;
+
   return (
     <div className="flex justify-center items-center flex-col mt-4 ">
-      <div className="flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg  min-w-80 shadow-lg">
+      <div className="flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg min-w-80 shadow-lg w-2 xl:w-auto">
         {isLoading ? (
           <p>Loading...</p>
         ) : (
@@ -83,7 +90,7 @@ function Page() {
                 className="border rounded-lg p-1 mb-2"
               />
               <button
-                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full"
+                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full disabled:opacity-60"
                 onClick={() => uploadFile(profileFile, "profile")}
               >
                 Upload Profile Image
@@ -99,8 +106,7 @@ function Page() {
                 className="border rounded-lg p-1 mb-2"
               />
               <button
-
-                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full"
+                className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full disabled:opacity-60"
                 onClick={() => uploadFile(coverFile, "cover")}
               >
                 Upload Cover Image
@@ -109,7 +115,7 @@ function Page() {
 
             <button
               onClick={() => router.push("/profile")}
-              className="bg-white text-black border-black border p-2 rounded-2xl  mt-2 cursor-pointer w-full"
+              className="bg-white text-black border-black border p-2 rounded-2xl mt-2 cursor-pointer "
             >
               Back
             </button>

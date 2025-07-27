@@ -1,37 +1,43 @@
-'use client'
-import MarketCard from '@/components/MarketCard'
-import React, { useEffect, useState } from 'react'
+'use client';
+import MarketCard from '@/components/MarketCard';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import MainLoader from '@/components/MainLoader';
 
 function Page() {
+  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // start as true initially
+  const router = useRouter();
 
-    const { data: session, status } = useSession();
-    const [user, setuser] = useState(null);
-    const router = useRouter();
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axios.post('/api/market/get');
+        setUser(response.data.allUser);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    useEffect(() => {
-        const getuser = async () => {
-            try {
-                const response = await axios.post('/api/market/get');
-                console.log(response.data);
-                setuser(response.data.allUser);
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-        };
+    if (session?.user?.email) {
+      getUser();
+    } else if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [session?.user?.email, status]);
 
-        if (session?.user?.email) {
-            getuser();
-        }
-    }, [session]);
+  if (loading) return <MainLoader />;
 
-    return (
-        <div>
-            <MarketCard user={user}></MarketCard>
-        </div>
-    )
+  return (
+    <div>
+      <MarketCard user={user} />
+    </div>
+  );
 }
 
-export default Page
+export default Page;

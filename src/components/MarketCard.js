@@ -44,8 +44,8 @@ function MarketCard({ user }) {
     }
 
     return (
-        <div className='h-80% top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center m-4'>
-            <div className="flex justify-center items-center flex-col rounded-2xl max-w-sm mx-auto">
+        <div className=' flex flex-col justify-center items-center m-4'>
+            <div className="flex justify-center items-center flex-col rounded-2xl max-w-sm mx-auto h-[80vh]">
                 <div className="flex flex-col shadow-xs border rounded-xl profile-card bg-white">
 
                     <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">
@@ -96,17 +96,23 @@ function MarketCard({ user }) {
                 <button
                     onClick={handlePrev}
                     disabled={currentIndex === 0}
-                    className={`w-1/2 px-6 border p-2 rounded-2xl mt-2 ${currentIndex === 0 ? 'text-gray-400 border-gray-300 cursor-not-allowed' : 'text-black border-neutral-300 cursor-pointer'}`}
+                    className={`flex gap-2 items-center w-1/2 px-6 border p-2 rounded-2xl mt-2 ${currentIndex === 0 ? 'text-gray-400 border-gray-300 cursor-not-allowed' : 'text-black border-neutral-300 cursor-pointer'}`}
                 >
+                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                        arrow_back
+                    </span>
                     Prev
                 </button>
 
                 <button
                     onClick={handleNext}
                     disabled={currentIndex >= user.length - 1}
-                    className={` w-1/2 px-6 border  p-2 rounded-2xl mt-2 ${currentIndex >= user.length - 1 ? 'text-gray-400 border-gray-300 cursor-not-allowed ' : 'text-black border border-neutral-300 cursor-pointer'}`}
+                    className={`flex gap-2 items-center w-1/2 px-6 border  p-2 rounded-2xl mt-2 ${currentIndex >= user.length - 1 ? 'text-gray-400 border-gray-300 cursor-not-allowed ' : 'text-black border border-neutral-300 cursor-pointer'}`}
                 >
                     Next
+                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                        arrow_forward
+                    </span>
                 </button>
 
             </div>

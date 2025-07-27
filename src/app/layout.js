@@ -26,21 +26,17 @@ export default function RootLayout({ children }) {
         <Script
           src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
           type="module"
-          strategy="afterInteractive" // recommended for non-blocking
+          strategy="beforeInteractive" 
         />
       </head>
       <body>
         <Session>
           <Toaster />
-          <Suspense fallback={<MainLoader />}>
             <Wrapper>
-
-
               {/* <Navbar /> */}
 
               {children}
             </Wrapper>
-          </Suspense>
         </Session>
       </body>
     </html>
