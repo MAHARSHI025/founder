@@ -1,9 +1,6 @@
 import Session from "@/components/Session";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Navbar from "@/components/Navbar";
-import Navbar2 from "@/components/Navbar2.js";
-import { Suspense } from "react";
 import MainLoader from "@/components/MainLoader";
 import Wrapper from "@/components/Wrapper";
 import Script from "next/script";
@@ -33,7 +30,6 @@ export default function RootLayout({ children }) {
         <Session>
           <Toaster />
             <Wrapper>
-              {/* <Navbar /> */}
 
               {children}
             </Wrapper>

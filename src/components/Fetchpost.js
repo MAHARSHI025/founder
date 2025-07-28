@@ -47,7 +47,7 @@ function Fetchpost() {
     }
 
     return (
-        <div className=''>
+        <div className='flex mt-15  gap-3  flex-wrap justify-center'>
             {data && data.findpost.length > 0 ? (
                 data.findpost.map((res) => (
                     <div className="flex justify-center items-center flex-col mb-3" key={res._id}>
@@ -58,7 +58,7 @@ function Fetchpost() {
                                 </span>
                             </button>
                             <div className="text-left mt-8">
-                                <img src={res.postimage} alt="" className='rounded-2xl object-cover' />
+                                <img src={res.postimage} alt="" className='rounded-2xl object-cover max-h-80' />
                                 <h5 className='text-sm text-neutral-600 my-2'>{res.createdAt.split("T")[0]}</h5>
                                 <h3>{res.description}</h3>
                             </div>

@@ -1,5 +1,4 @@
 import React from 'react'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 
 function MainLoader() {

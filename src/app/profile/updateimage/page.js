@@ -73,7 +73,7 @@ function Page() {
   if (uploading || status === "loading") return <MainLoader />;
 
   return (
-    <div className="flex justify-center items-center flex-col mt-4 ">
+    <div className="flex justify-center items-center flex-col mt-15 ">
       <div className="flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg min-w-80 shadow-lg w-2 xl:w-auto">
         {isLoading ? (
           <p>Loading...</p>

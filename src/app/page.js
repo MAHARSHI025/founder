@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Card from "@/components/Card";
 import { PointerHighlight } from "@/components/ui/pointer-highlight";
 import Link from "next/link";
+import Lottie from "@/components/Lottie";
 
 
 export default function Home() {
@@ -16,7 +17,8 @@ export default function Home() {
   return (
     <>
       <div className=" flex flex-col  justify-center items-center h-[80vh] gap-2">
-        <div className="flex flex-col  justify-center items-center gap-4 sm:gap-8  text-center">
+        <div className="flex flex-col  justify-center items-center gap-2 sm:gap-8  text-center">
+          <Lottie />
 
           <div className="flex justify-center items-center gap-1 text-[30px] sm:text-6xl font-semibold flex-wrap">
 
@@ -46,7 +48,7 @@ export default function Home() {
           <Link href={"/"} className=" border-b border-b-black">Read docs</Link>
         </div>
 
-        <div className="fixed bottom-4">
+        <div className="fixed bottom-1 text-xs">
           <h1 className=" text-neutral-400">Founder by thoughter</h1>
         </div>
       </div>

@@ -8,8 +8,8 @@ import MainLoader from './MainLoader';
 function Card() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Initially loading
-  const [isFetched, setIsFetched] = useState(false); // Track if already fetched
+  const [loading, setLoading] = useState(true); 
+  const [isFetched, setIsFetched] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function Card() {
         console.error("Error fetching user:", error);
       } finally {
         setLoading(false);
-        setIsFetched(true); // Mark as fetched
+        setIsFetched(true); 
       }
     };
 
@@ -37,7 +37,7 @@ function Card() {
   if (!user) return <p className="text-center mt-10">User not found.</p>;
 
   return (
-    <div className='h-80% top-0 left-0 right-0 bottom-0 flex justify-center items-center m-4 '>
+    <div className=' flex justify-center items-center h-[80vh] mx-4'>
       <div className="profile-card flex justify-center items-center flex-col bg-white shadow-md rounded-2xl max-w-sm mx-auto ">
         <div className="flex flex-col ">
           <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">

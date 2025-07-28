@@ -71,10 +71,10 @@ function Page() {
 
     return (
 
-        <div className=' flex flex-col items-center p-2 m-2'>
+        <div className='  m-2 mt-15 flex justify-center items-center mx-0'>
 
             <form onSubmit={handleSubmit}>
-                <div className='flex flex-col mx-auto max-w-min border border-gray-300 p-6 py-10 rounded-lg drop-shadow-2xl min-w-80'>
+                <div className='flex flex-col mx-auto max-w-min border border-gray-300  py-10 rounded-lg drop-shadow-2xl min-w-80 sm:p-6'>
                     <h1 className='text-2xl font-bold text-center mb-3'>Update profile</h1>
                     <div className='text-center mb-4'>
 
