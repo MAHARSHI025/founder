@@ -3,7 +3,7 @@ import Login from '@/components/Login'
 import Signup from '@/components/Signup'
 import React, { useState } from 'react'
 
-function page() {
+function Page() {
 
     const [action, setaction] = useState('signup')
 
@@ -22,4 +22,4 @@ function page() {
     )
 }
 
-export default page
+export default Page
