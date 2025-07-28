@@ -6,6 +6,7 @@ const Signup = dynamic(() => import('@/components/Signup'), { ssr: false });
 
 import { signOut, useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
+import { redirect } from 'next/navigation';
 
 function Layout({ children }) {
 
@@ -18,18 +19,14 @@ function Layout({ children }) {
             setaction("authenticated");
         }
     }, [session, status]);
-
-
-    if (action === 'signup') {
-        return <Signup setaction={setaction} />;
-    }
-    if (action === 'login') {
-        return <Login setaction={setaction} />;
+    
+    if (!session) {
+        return redirect("/signup");
     }
 
 
     return (
-        <div className=' flex flex-col mt-4 '>
+        <div className=' flex flex-col '>
 
             {children}
         </div>

@@ -3,7 +3,6 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import MainLoader from "@/components/MainLoader";
 import Wrapper from "@/components/Wrapper";
-import Script from "next/script";
 
 export const metadata = {
   title: "Founder by thoughter",
@@ -20,11 +19,6 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
         <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"></link>
 
-        <Script
-          src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
-          type="module"
-          strategy="beforeInteractive" 
-        />
       </head>
       <body>
         <Session>

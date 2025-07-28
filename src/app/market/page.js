@@ -27,7 +27,7 @@ function Page() {
     if (session?.user?.email) {
       getUser();
     } else if (status === 'unauthenticated') {
-      router.push('/login');
+      router.push('');
     }
   }, [session?.user?.email, status]);
 

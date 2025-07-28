@@ -10,8 +10,8 @@ export async function POST(req) {
         const body = await req.json();
         const { sender_id, receiver_id } = body;
 
-        console.log(sender_id,receiver_id);
-        
+        console.log(sender_id, receiver_id);
+
 
         if (!sender_id || !receiver_id) {
             return NextResponse.json(
@@ -32,17 +32,23 @@ export async function POST(req) {
 
         const newContact = new Contact({
             sender_id: sender._id,
-            sender_email:sender.email,
+            sender_email: sender.email,
             receiver_id: receiver._id,
             receiver_email: receiver.email
         });
 
         await newContact.save();
 
+        if (!Array.isArray(sender.contacts)) {
+            sender.contacts = [];
+        }
         sender.contacts.push(newContact._id);
-        await sender.save(); 
+
+        if (!Array.isArray(receiver.contacts)) {
+            receiver.contacts = [];
+        }
         receiver.contacts.push(newContact._id);
-        await receiver.save(); 
+
 
         return NextResponse.json({
             message: "Contact updated successfully",

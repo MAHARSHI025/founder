@@ -24,7 +24,7 @@ const handler = NextAuth({
         if (!valid) throw new Error('Invalid password');
 
         return {
-          id: user._id.toString(), // 👈 Make sure this is returned
+          id: user._id.toString(), 
           email: user.email,
           organization_name: user.organization_name,
           profileimage: user.profileimage,

@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-function Signup({ setaction }) {
+function Signup({setaction}) {
 
     const [user, setUser] = useState({
         organization_name: '',
@@ -13,6 +14,8 @@ function Signup({ setaction }) {
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+
+    const router = useRouter()
 
 
 
@@ -96,8 +99,8 @@ function Signup({ setaction }) {
                 </div>
 
             </form>
-            <div className='text-center mt-4'>
-                <button onClick={() => setaction('login')}>
+            <div className='text-center mt-4 '>
+                <button onClick={() => setaction('login')} className='cursor-pointer'>
                     Already have an account? Login
                 </button>
             </div>

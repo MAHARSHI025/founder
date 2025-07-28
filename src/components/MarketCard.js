@@ -44,8 +44,33 @@ function MarketCard({ user }) {
     }
 
     return (
-        <div className=' flex flex-col justify-center items-center m-4'>
-            <div className="flex justify-center items-center flex-col rounded-2xl max-w-sm mx-auto h-[80vh]">
+        <div className=' flex flex-col justify-center items-center m-4 mt-20'>
+            <div className="flex justify- items-center flex-col rounded-2xl max-w-sm mx-auto h-[80vh]">
+                <div className='flex flex-row items-center justify-center px-10 gap-5 mb-4'>
+
+                    <button
+                        onClick={handlePrev}
+                        disabled={currentIndex === 0}
+                        className={`flex gap-2 items-center w-1/2 px-6 border p-2 rounded-2xl mt-2 ${currentIndex === 0 ? 'text-gray-400 border-gray-300 cursor-not-allowed' : 'text-black border-neutral-300 cursor-pointer'}`}
+                    >
+                        <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                            arrow_back
+                        </span>
+                        Prev
+                    </button>
+
+                    <button
+                        onClick={handleNext}
+                        disabled={currentIndex >= user.length - 1}
+                        className={`flex gap-2 items-center w-1/2 px-6 border  p-2 rounded-2xl mt-2 ${currentIndex >= user.length - 1 ? 'text-gray-400 border-gray-300 cursor-not-allowed ' : 'text-black border border-neutral-300 cursor-pointer'}`}
+                    >
+                        Next
+                        <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                            arrow_forward
+                        </span>
+                    </button>
+
+                </div>
                 <div className="flex flex-col shadow-xs border rounded-xl profile-card bg-white">
 
                     <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">
@@ -91,31 +116,7 @@ function MarketCard({ user }) {
                 </div>
             </div>
 
-            <div className='flex flex-row items-center justify-center px-10 gap-5 mt-4'>
 
-                <button
-                    onClick={handlePrev}
-                    disabled={currentIndex === 0}
-                    className={`flex gap-2 items-center w-1/2 px-6 border p-2 rounded-2xl mt-2 ${currentIndex === 0 ? 'text-gray-400 border-gray-300 cursor-not-allowed' : 'text-black border-neutral-300 cursor-pointer'}`}
-                >
-                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
-                        arrow_back
-                    </span>
-                    Prev
-                </button>
-
-                <button
-                    onClick={handleNext}
-                    disabled={currentIndex >= user.length - 1}
-                    className={`flex gap-2 items-center w-1/2 px-6 border  p-2 rounded-2xl mt-2 ${currentIndex >= user.length - 1 ? 'text-gray-400 border-gray-300 cursor-not-allowed ' : 'text-black border border-neutral-300 cursor-pointer'}`}
-                >
-                    Next
-                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
-                        arrow_forward
-                    </span>
-                </button>
-
-            </div>
         </div>
     );
 }

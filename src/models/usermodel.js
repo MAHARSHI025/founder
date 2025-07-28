@@ -55,11 +55,14 @@ const userSchema = new mongoose.Schema({
     },
     city: {
         type: String,
-        required: true,
     },
     likecount: {
         type: Number,
         default: 0,
+    },
+    urls: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Url',
     },
 
     verifytoken: String,

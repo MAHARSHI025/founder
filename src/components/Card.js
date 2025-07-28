@@ -41,7 +41,7 @@ function Card() {
       <div className="profile-card flex justify-center items-center flex-col bg-white shadow-md rounded-2xl max-w-sm mx-auto ">
         <div className="flex flex-col ">
           <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">
-            <img className="w-full object-cover h-40" src={user?.coverimage} alt="Cover" loading='lazy' />
+            <img className="w-full object-cover h-40 rounded-lg" src={user?.coverimage} alt="Cover" loading='lazy' />
           </div>
 
           <div className="flex profile-image items-end p-1">

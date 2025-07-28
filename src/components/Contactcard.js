@@ -6,17 +6,17 @@ function Contactcard({ email, organization_name, city, image }) {
   const router = useRouter()
 
   return (
-    <div className=' max-w-xl border-neutral-600 border p-4 rounded-2xl flex justify-between flex-wrap gap-8'>
-      <div className=' flex gap-4 items-center min-w-xs'>
+    <div className=' border-neutral-600 border p-4 rounded-2xl flex justify-between '>
+      <div className=' flex gap-2 items-center  sm:min-w-xs'>
 
         <div>
-          <img src={image} alt="" className=' h-15 w-15  object-cover rounded-full border' />
+          <img src={image} alt="" className=' h-[50px] w-[50px]  object-cover rounded-full border' />
         </div>
         <div className=' flex flex-col'>
-          <h1>{email}</h1>
+          <h1 className='text-[10px]'>{email}</h1>
           <h1>{organization_name}</h1>
-          <h1 className=' text-neutral-400'>{city}</h1>
-        </div>
+          <h1 className=' text-neutral-400 text-[8px] '>{city}</h1>
+        </div> 
       </div>
       <div className='flex gap-2 justify-center items-center'>
         <button className=' flex cursor-pointer'><span className="material-symbols-outlined text-sm text-neutral-300" style={{

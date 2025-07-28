@@ -16,22 +16,27 @@ function Login({ setaction }) {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage('');
+  e.preventDefault();
+  setLoading(true);
+  setMessage('');
 
-        console.log(user);
-        
+  const res = await signIn('credentials', {
+    email: user.email,
+    password: user.password,
+    redirect: false, 
+  });
 
-        const res = await signIn('credentials', {
-            email: user.email,
-            password: user.password,
-            redirect: false, 
-        });
-        toast.success('Successfully logged in!');
+  setLoading(false);
 
-        setLoading(false);
-    };
+  if (res?.ok) {
+    toast.success('Successfully logged in!');
+    router.push('/profile'); 
+  } else {
+    toast.error('Login failed. Please check your credentials.');
+    setMessage('Invalid email or password');
+  }
+};
+
 
     return (
         <div className=' w-full flex items-center justify-center flex-col mt-6'>
