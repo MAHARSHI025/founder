@@ -87,7 +87,7 @@ function Page() {
               <input
                 type="file"
                 onChange={(e) => setProfileFile(e.target.files[0])}
-                className="border rounded-lg p-1 mb-2"
+                className="border rounded-lg p-1 mb-2 max-w-[100%]"
               />
               <button
                 className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full disabled:opacity-60"
@@ -103,7 +103,7 @@ function Page() {
               <input
                 type="file"
                 onChange={(e) => setCoverFile(e.target.files[0])}
-                className="border rounded-lg p-1 mb-2"
+                className="border rounded-lg p-1 mb-2 max-w-[100%]"
               />
               <button
                 className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer w-full disabled:opacity-60"

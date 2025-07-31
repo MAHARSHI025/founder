@@ -1,10 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
-function Signup({setaction}) {
+function Signup({ setaction }) {
+
+     const { data: session, status } = useSession();
 
     const [user, setUser] = useState({
         organization_name: '',
@@ -14,8 +17,13 @@ function Signup({setaction}) {
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-
     const router = useRouter()
+
+   useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/profile");
+    }
+  }, [status, router]);
 
 
 
@@ -52,7 +60,13 @@ function Signup({setaction}) {
 
 
     return (
-        <div className=' w-full flex flex-col items-center  mt-6 justify-center'>
+        <div className=''>
+            <button onClick={() => router.push('/')} className=' cursor-pointer flex items-center mb-5'>
+                <span className="material-symbols-outlined"  style={{ fontSize: '16px', marginRight:"5px" }}>
+                    arrow_back
+                </span>
+                Home
+            </button>
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-4 mx-auto max-w-min min-w-xs border border-gray-300 p-6 py-10 rounded-lg drop-shadow-2xl'>
                     <h1 className='text-2xl font-bold text-center'>Signup</h1>
@@ -99,7 +113,7 @@ function Signup({setaction}) {
                 </div>
 
             </form>
-            <div className='text-center mt-4 '>
+            <div className='text-center mt-4 flex flex-col gap-5'>
                 <button onClick={() => setaction('login')} className='cursor-pointer'>
                     Already have an account? Login
                 </button>

@@ -7,12 +7,16 @@ import Wrapper from "@/components/Wrapper";
 export const metadata = {
   title: "Founder by thoughter",
   description: "A platform for founders to connect and grow",
+
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+       <link rel="icon" type="image/svg+xml" href="/icon.png" />
+
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,10 +27,10 @@ export default function RootLayout({ children }) {
       <body>
         <Session>
           <Toaster />
-            <Wrapper>
+          <Wrapper>
 
-              {children}
-            </Wrapper>
+            {children}
+          </Wrapper>
         </Session>
       </body>
     </html>

@@ -1,14 +1,21 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 function Login({ setaction }) {
+
     const [user, setUser] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const router = useRouter();
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.push("/profile");
+        }
+    }, [status, router]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -16,30 +23,36 @@ function Login({ setaction }) {
     };
 
     const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setMessage('');
+        e.preventDefault();
+        setLoading(true);
+        setMessage('');
 
-  const res = await signIn('credentials', {
-    email: user.email,
-    password: user.password,
-    redirect: false, 
-  });
+        const res = await signIn('credentials', {
+            email: user.email,
+            password: user.password,
+            redirect: false,
+        });
 
-  setLoading(false);
+        setLoading(false);
 
-  if (res?.ok) {
-    toast.success('Successfully logged in!');
-    router.push('/profile'); 
-  } else {
-    toast.error('Login failed. Please check your credentials.');
-    setMessage('Invalid email or password');
-  }
-};
+        if (res?.ok) {
+            toast.success('Successfully logged in!');
+            router.push('/profile');
+        } else {
+            toast.error('Login failed. Please check your credentials.');
+            setMessage('Invalid email or password');
+        }
+    };
 
 
     return (
-        <div className=' w-full flex items-center justify-center flex-col mt-6'>
+        <div className=' flex-col '>
+            <button onClick={() => router.push('/')} className=' cursor-pointer flex items-center mb-5'>
+                <span className="material-symbols-outlined" style={{ fontSize: '16px', marginRight: "5px" }}>
+                    arrow_back
+                </span>
+                Home
+            </button>
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-4 mx-auto max-w-min min-w-xs border border-gray-300 p-6 py-10 rounded-lg drop-shadow-2xl'>
                     <h1 className='text-2xl font-bold text-center'>Login</h1>
@@ -76,8 +89,8 @@ function Login({ setaction }) {
                     )}
                 </div>
             </form>
-            <div className='text-center mt-4'>
-                <button onClick={() => setaction('signup')}>
+            <div className='text-center mt-4 '>
+                <button onClick={() => setaction('signup')} className='cursor-pointer'>
                     Dont have an account? Signup
                 </button>
             </div>

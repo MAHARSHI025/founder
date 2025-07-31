@@ -9,7 +9,7 @@ import MainLoader from '@/components/MainLoader';
 function Page() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // start as true initially
+  const [loading, setLoading] = useState(true); 
   const router = useRouter();
 
   useEffect(() => {
@@ -26,8 +26,9 @@ function Page() {
 
     if (session?.user?.email) {
       getUser();
-    } else if (status === 'unauthenticated') {
-      router.push('');
+    } 
+    if (status === 'unauthenticated') {
+      router.push('/signup');
     }
   }, [session?.user?.email, status]);
 
