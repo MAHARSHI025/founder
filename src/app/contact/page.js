@@ -27,7 +27,9 @@ function Page() {
         const response = await axios.post("/api/contact/get", {
           email: session.user.email,
         });
-        setData(response.data.details);
+        setData(response.data.user.contacts);
+        console.log(response.data);
+        
       } catch (err) {
         console.error("Error fetching contacts", err);
       } finally {
@@ -59,9 +61,9 @@ function Page() {
           data.map((item, index) => (
             <Contactcard
               key={index}
-              email={item.sender_id.email}
-              city={item.sender_id.city}
-              image={item.sender_id.profileimage}
+              email={item.email}
+              city={item.city}
+              image={item.profileimage}
             />
           ))
         ) : (

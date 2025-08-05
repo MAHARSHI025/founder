@@ -1,6 +1,5 @@
 "use client";
 
-import { data } from 'autoprefixer';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -10,6 +9,7 @@ import toast from 'react-hot-toast';
 function MarketCard({ user }) {
     const { data: session, status } = useSession();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter()
 
@@ -30,16 +30,38 @@ function MarketCard({ user }) {
     };
 
     const contacthandle = async (receiver_id) => {
-        try {
-            const response = await axios.post('/api/contact/add', { sender_id: session.user.id, receiver_id: receiver_id })
-            console.log(response.data);
+        // Check if user is authenticated
+        if (!session?.user?.id) {
+            toast.error("Please login to add contacts");
+            return;
+        }
 
-            toast.success("Contact Added")
-            router.push("/contact")
+        setIsLoading(true);
+        try {
+            const response = await axios.post('/api/contact/add', { 
+                sender_id: session.user.id, 
+                receiver_id: receiver_id 
+            });
+            
+            console.log(response.data);
+            toast.success("Contact Added Successfully");
+            router.push("/contact");
 
         } catch (error) {
             console.log("error", error);
-
+            
+            // Handle specific error cases
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else if (error.response?.status === 409) {
+                toast.error("Contact already exists");
+            } else if (error.response?.status === 400) {
+                toast.error("Invalid request");
+            } else {
+                toast.error("Failed to add contact. Please try again.");
+            }
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -110,8 +132,12 @@ function MarketCard({ user }) {
                         </h3>
                     </div>
 
-                    <button onClick={() => contacthandle(item._id)} className="bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer">
-                        Contact us
+                    <button 
+                        onClick={() => contacthandle(item._id)} 
+                        disabled={isLoading}
+                        className={`bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {isLoading ? 'Adding...' : 'Contact us'}
                     </button>
                 </div>
             </div>

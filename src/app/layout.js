@@ -5,7 +5,7 @@ import MainLoader from "@/components/MainLoader";
 import Wrapper from "@/components/Wrapper";
 
 export const metadata = {
-  title: "Founder by thoughter",
+  title: "Founder",
   description: "A platform for founders to connect and grow",
 
 };

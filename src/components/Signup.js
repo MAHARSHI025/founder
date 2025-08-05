@@ -60,7 +60,7 @@ function Signup({ setaction }) {
 
 
     return (
-        <div className=''>
+        <div className='h-screen w-screen flex  items-center flex-col'>
             <button onClick={() => router.push('/')} className=' cursor-pointer flex items-center mb-5'>
                 <span className="material-symbols-outlined"  style={{ fontSize: '16px', marginRight:"5px" }}>
                     arrow_back

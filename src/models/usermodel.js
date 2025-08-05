@@ -42,8 +42,8 @@ const userSchema = new mongoose.Schema({
         ref: 'Post',
     }],
     contacts: [{
-        type: Array,
-        default: []
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }],
     badges: {
         type: Array,
