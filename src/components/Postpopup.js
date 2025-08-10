@@ -29,7 +29,7 @@ function Postpopup({ onClose, posts }) {
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold mb-6 text-center">{posts?.organization_name}'s Posts</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">{posts?.organization_name}&apos;s Posts</h2>
         {posts && posts.posts && posts.posts.length > 0 ? (
           <div className="flex flex-wrap gap-6 justify-center">
             {posts.posts.map((res) => (
