@@ -60,9 +60,17 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    urls: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Url',
+    website: {
+        type: String,
+        default:''
+    },
+    instagram: {
+        type: String,
+        default:''
+    },
+    linkedin: {
+        type: String,
+        default:''
     },
 
     verifytoken: String,

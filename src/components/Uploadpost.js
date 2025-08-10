@@ -81,7 +81,7 @@ function Uploadpost({ setaction }) {
     };
 
     return (
-        <div className="flex justify-center items-center flex-col m-4">
+        <div className="flex justify-center items-center flex-col mt-15">
             <div className="border-2 border-gray-200 text-center rounded-2xl max-w-sm mx-auto flex justify-center items-center flex-col p-4 gap-4">
                 <div>
                     <h1>Hello</h1>

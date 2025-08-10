@@ -8,7 +8,7 @@ connect();
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { organization_name, sessionemail, description, city, bio, about } = body;
+        const { organization_name, sessionemail, description, city, bio, about, website, instagram, linkedin, badges } = body;
         console.log("Received update request with data:", { organization_name, sessionemail });
 
         const existingUser = await User.findOne({ email: sessionemail });
@@ -34,7 +34,11 @@ export async function POST(req) {
                     description: description || existingUser.description,
                     city: city || existingUser.city,
                     bio: bio || existingUser.bio,
-                    about: about || existingUser.about
+                    about: about || existingUser.about,
+                    website: website || existingUser.website,
+                    instagram: instagram || existingUser.instagram,
+                    linkedin: linkedin || existingUser.linkedin,
+                    badges: badges || existingUser.badges
                 }
             },
             { new: true }

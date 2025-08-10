@@ -2,11 +2,15 @@
 import React, { useState } from 'react'
 import { HoveredLink, Menu, MenuItem, ProductItem } from './ui/navbar-menu'
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 function Navbar2() {
 
     const [active, setActive] = useState(null);
+    const { data: session, status } = useSession();
+    const router = useRouter()
+
 
     return (
         <div className=' fixed left-1/2 right-1/2 z-[500] top-1 '>
@@ -31,7 +35,11 @@ function Navbar2() {
                         <HoveredLink href="/profile/posts">Posts</HoveredLink>
                         <HoveredLink href="/profile/updateimage">Edit image</HoveredLink>
                         <HoveredLink href="/contact">Contacts</HoveredLink>
-                        <button onClick={() => signOut()} className=' bg-red-800 px-3 py-1 rounded-lg cursor-pointer  '>Signout</button>
+                        {status === 'authenticated' ?
+                            <button onClick={() => signOut()} className=' bg-red-800 px-3 py-1 rounded-lg cursor-pointer  '>Signout</button>
+                            :
+                            <button onClick={() => router.push('/signup')} className=' bg-green-800 px-3 py-1 rounded-lg cursor-pointer  '>Sign In</button>
+                        }
                     </div>
                 </MenuItem>
             </Menu>

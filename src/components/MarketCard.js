@@ -5,17 +5,23 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import Postpopup from './Postpopup';
+import Link from 'next/link';
 
 function MarketCard({ user }) {
     const { data: session, status } = useSession();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+
 
     const router = useRouter()
 
     if (!user || user.length === 0) return <p>No users available</p>;
 
     const item = user[currentIndex];
+    console.log(item);
+    
 
     const handleNext = () => {
         if (currentIndex < user.length - 1) {
@@ -30,7 +36,6 @@ function MarketCard({ user }) {
     };
 
     const contacthandle = async (receiver_id) => {
-        // Check if user is authenticated
         if (!session?.user?.id) {
             toast.error("Please login to add contacts");
             return;
@@ -38,19 +43,18 @@ function MarketCard({ user }) {
 
         setIsLoading(true);
         try {
-            const response = await axios.post('/api/contact/add', { 
-                sender_id: session.user.id, 
-                receiver_id: receiver_id 
+            const response = await axios.post('/api/contact/add', {
+                sender_id: session.user.id,
+                receiver_id: receiver_id
             });
-            
+
             console.log(response.data);
             toast.success("Contact Added Successfully");
             router.push("/contact");
 
         } catch (error) {
             console.log("error", error);
-            
-            // Handle specific error cases
+
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else if (error.response?.status === 409) {
@@ -93,7 +97,7 @@ function MarketCard({ user }) {
                     </button>
 
                 </div>
-                <div className="flex flex-col shadow-xs border rounded-xl profile-card bg-white">
+                <div className="flex flex-col shadow-xs border rounded-xl profile-card bg-white ">
 
                     <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">
                         <img className="w-full object-cover h-40 rounded-lg" src={item?.coverimage} alt="" loading='lazy' />
@@ -113,9 +117,12 @@ function MarketCard({ user }) {
                             <h1 className='font-light text-xs text-gray-500'>
                                 {item?.city || "City not provided"}
                             </h1>
-                            <button className={`absolute right-5 bottom-2 px-4 cursor-pointer border p-1 rounded-xl text-black border-neutral-400`}>
+                            <button onClick={() => setShowPopup(true)} className={`absolute right-5 bottom-2 px-4 cursor-pointer border p-1 rounded-xl text-black border-neutral-400`}>
                                 Posts
                             </button>
+                            {showPopup && (
+                                <Postpopup posts={item} onClose={() => setShowPopup(false)} />
+                            )}
                         </div>
                     </div>
 
@@ -123,17 +130,67 @@ function MarketCard({ user }) {
                     <h3 className='ml-6'>{item?.bio}</h3>
                     <h3 className='ml-6'>{item?.about}</h3>
 
+                    <div className="flex gap-4 ml-6 mt-15 grayscale-100">
+                        {item?.linkedin && (
+                            <a 
+                                href={item.linkedin} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="hover:opacity-80 transition-opacity"
+                            >
+                                <img 
+                                    width={25} 
+                                    height={25}
+                                    src="https://www.citypng.com/public/uploads/preview/hd-linkedin-square-black-icon-transparent-background-7017516949739946gsykkwdmd.png?v=2025061905" 
+                                    alt="LinkedIn Profile" 
+                                />
+                            </a>
+                        )}
+                        {item?.instagram && (
+                            <a 
+                                href={item.instagram} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="hover:opacity-80 transition-opacity"
+                            >
+                                <img 
+                                    width={25} 
+                                    height={25}
+                                    src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjk4Mi1kMi0wNC5wbmc.png" 
+                                    alt="Instagram Profile" 
+                                />
+                            </a>
+                        )}
+                        {item?.website && (
+                            <a 
+                                href={item.website} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="hover:opacity-80 transition-opacity"
+                            >
+                                <img 
+                                    width={25} 
+                                    height={25}
+                                    src="https://cdn-icons-png.flaticon.com/512/3037/3037366.png" 
+                                    alt="Instagram Profile" 
+                                />
+                            </a>
+                        )}
+                    </div>
+
+
+
                     <div className='flex justify-between items-center'>
-                        <h3 className='font-light text-xs text-gray-500 mt-10 ml-6'>
+                        <h3 className='font-light text-xs text-gray-500 mt-5 ml-6'>
                             Last updated at {item?.updatedAt?.slice(0, 10)}
                         </h3>
-                        <h3 className='font-light text-xs text-gray-500 mt-10 mr-6'>
-                            Contact by {item?.likecount}
+                        <h3 className='font-light text-xs text-gray-500 mt-5 mr-6'>
+                            Contact by {item?.contacts.length}
                         </h3>
                     </div>
 
-                    <button 
-                        onClick={() => contacthandle(item._id)} 
+                    <button
+                        onClick={() => contacthandle(item._id)}
                         disabled={isLoading}
                         className={`bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >

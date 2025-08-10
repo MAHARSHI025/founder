@@ -40,7 +40,7 @@ export async function POST(req) {
 
         const updatedUser = await User.findOneAndUpdate(
             { email },
-            { $addToSet: { post: newpost._id } },
+            { $addToSet: { posts: newpost._id } },
             { new: true }
         );
 

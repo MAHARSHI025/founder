@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import BadgeDropdown from '@/components/BadgeDropdown';
 
 function Page() {
     const router = useRouter()
@@ -11,6 +12,7 @@ function Page() {
     const data = session?.user || {};
 
     const [user, setUser] = useState({});
+    const [selectedBadges, setSelectedBadges] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
@@ -22,9 +24,11 @@ function Page() {
             try {
                 console.log("Session Data:", session);
                 const response = await axios.post('/api/user/getuser', { email: session.user.email });
-                const userData = response.data.user;
-
-                setUser(userData);
+                setUser(response.data.user);
+                // Set selected badges from user data
+                if (response.data.user.badges) {
+                    setSelectedBadges(response.data.user.badges);
+                }
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 setMessage('Failed to fetch user data.');
@@ -50,7 +54,18 @@ function Page() {
         setMessage('');
 
         try {
-            const response = await axios.post('/api/user/editprofile', { organization_name: user.organization_name, sessionemail: data.email, city: user.city, description: user.description, bio: user.bio, about: user.about });
+            const response = await axios.post('/api/user/editprofile', {
+                organization_name: user.organization_name,
+                sessionemail: data.email,
+                city: user.city,
+                description: user.description,
+                bio: user.bio,
+                about: user.about,
+                website: user.website,
+                instagram: user.instagram,
+                linkedin: user.linkedin,
+                badges: selectedBadges,
+            });
             console.log("Response Data:", response.data);
             setMessage(response.data.message || 'edit successful!');
 
@@ -112,8 +127,28 @@ function Page() {
 
                         </div>
                     </div>
+                    <div className=' flex flex-col p-5 mt-2'>
+                        <label className=' text-xs text-neutral-700 mb-2' >Badges</label>
+                        <BadgeDropdown 
+                            selectedBadges={selectedBadges}
+                            onBadgeChange={setSelectedBadges}
+                            placeholder="Select your industry badges..."
+                        />
+                    </div>
+                   
+                    <div className=' flex flex-col p-5 mt-2'>
+                        <label htmlFor="website" className=' text-xs text-neutral-700' >Website</label>
+                        <input type="text" name="website" placeholder="Enter Website url" value={user?.website || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                       
+                        <label htmlFor="instagram" className=' text-xs text-neutral-700' >instagram</label>
+                        <input type="text" name="instagram" placeholder="Enter instagram url" value={user?.instagram || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                       
+                        <label htmlFor="linkedin" className=' text-xs text-neutral-700' >linkedin</label>
+                        <input type="text" name="linkedin" placeholder="Enter linkedin url" value={user?.linkedin || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                       
+                    </div>
 
-
+                  
                     <button
                         type="submit"
                         className='bg-black text-white rounded-lg px-2 py-1.5 mt-4'

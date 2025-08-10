@@ -17,6 +17,9 @@ function Page() {
       try {
         const response = await axios.post('/api/market/get');
         setUser(response.data.allUser);
+        console.log("Market page received data:", response.data.allUser);
+        console.log("First user posts:", response.data.allUser[0]?.posts);
+        
       } catch (error) {
         console.error("Error fetching user:", error);
       } finally {

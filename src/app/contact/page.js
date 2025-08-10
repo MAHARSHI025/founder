@@ -28,7 +28,7 @@ function Page() {
           email: session.user.email,
         });
         setData(response.data.user.contacts);
-        console.log(response.data);
+        console.log("bvhjfxvhhd",response.data);
         
       } catch (err) {
         console.error("Error fetching contacts", err);
@@ -40,28 +40,22 @@ function Page() {
     if (status === "authenticated") {
       getContacts();
     }
-  }, [session, status]);
+  }, []);
 
   if (loading || status === "loading") return <MainLoader />;
 
   return (
-    <div className="flex flex-col mx-auto max-w-2xl border border-gray-300 p-6 py-10 rounded-lg mt-20 relative">
-      {/* <button
-        className="absolute top-2 right-5 text-gray-700 hover:text-black transition"
-        onClick={() => router.push("/contact/request")}
-        title="Add Contact"
-      >
-        <span className="material-symbols-outlined">group_add</span>
-      </button> */}
+    <div className="flex flex-col mx-auto max-w-2xl border border-gray-300 p-2 py-10 rounded-lg mt-20 relative">
 
       <h1 className="text-2xl font-bold text-center mb-3">Contacts</h1>
 
-      <div className="flex flex-col items-center gap-4 h-[70vh] overflow-scroll scrollbar-hide">
+      <div className="flex flex-col items-center  gap-4 h-[70vh] overflow-scroll scrollbar-hide">
         {data.length > 0 ? (
           data.map((item, index) => (
             <Contactcard
               key={index}
               email={item.email}
+              organization_name={item.organization_name}
               city={item.city}
               image={item.profileimage}
             />
