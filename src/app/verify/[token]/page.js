@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { use } from "react"
 import toast from "react-hot-toast"
 
-export default async function VerifyPage({ params }) {
+export default function VerifyPage({ params }) {
     const router = useRouter()
     const { token } = use(params);
 
