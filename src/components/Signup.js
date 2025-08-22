@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-function Signup({ setaction }) {
+function Signup() {
 
      const { data: session, status } = useSession();
 
@@ -45,7 +45,7 @@ function Signup({ setaction }) {
             const response = await axios.post('/api/user/signup', user);
             setMessage(response.data.message || 'Signup successful!');
             toast.success('Successfully created!');
-            setaction('login');
+            router.push('/login');
             setUser({ organization_name: '', email: '', password: '' });
         } catch (error) {
             console.error('Signup error:', error);
@@ -114,7 +114,7 @@ function Signup({ setaction }) {
 
             </form>
             <div className='text-center mt-4 flex flex-col gap-5'>
-                <button onClick={() => setaction('login')} className='cursor-pointer'>
+                <button onClick={() => router.push('/login')} className='cursor-pointer'>
                     Already have an account? Login
                 </button>
             </div>

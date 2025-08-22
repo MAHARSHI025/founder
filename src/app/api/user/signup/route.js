@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/usermodel";
 import bcryptjs from "bcryptjs";
+import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
+
 
 connect();
 
@@ -35,10 +38,34 @@ export async function POST(req) {
             organization_name,
             email,
             password: hashedPassword,
+            isverified: false,
         });
 
         const savedUser = await newUser.save();
         console.log("New User added:", savedUser);
+
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const verifyUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/verify/${token}`;
+
+
+        const transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth: {
+                user: process.env.GOOGLE_APP_EMAIL,
+                pass: process.env.GOOGLE_APP_PASSWORD,
+            },
+        });
+
+        await transporter.sendMail({
+            from: process.env.GOOGLE_APP_EMAIL,
+            to: email,
+            subject: "VERIFY YOUR MAIL (FOUNDER)",
+            html: `<p>Hello ${organization_name},</p>
+             <p>Click below to verify your email:</p>
+             <a href="${verifyUrl}">${verifyUrl}</a>
+             <p>This link expires in 1 hour.</p>`,
+        });
+
 
         return NextResponse.json({
             message: "Signup successful",

@@ -6,8 +6,8 @@ import Navbar2 from "@/components/Navbar2";
 export default function Wrapper({ children }) {
   const pathname = usePathname();
 
-  const hideNavbarRoutes = ["/chat", "/signup", "/some/other/path"];
-  const shouldHideNavbar = hideNavbarRoutes.includes(pathname);
+  const hideNavbarRoutes = ["/chat", "/signup",'/login', "/some/other/path"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(pathname) || pathname.startsWith("/verify/");
 
   return (
     <>

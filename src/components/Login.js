@@ -1,12 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-function Login({ setaction }) {
+function Login() {
 
     const [user, setUser] = useState({ email: '', password: '' });
+    const { data: session, status } = useSession();
+
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const router = useRouter();
@@ -90,7 +92,7 @@ function Login({ setaction }) {
                 </div>
             </form>
             <div className='text-center mt-4 '>
-                <button onClick={() => setaction('signup')} className='cursor-pointer'>
+                <button onClick={() => router.push('/signup')} className='cursor-pointer'>
                     Dont have an account? Signup
                 </button>
             </div>

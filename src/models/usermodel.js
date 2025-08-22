@@ -73,6 +73,7 @@ const userSchema = new mongoose.Schema({
         default:''
     },
 
+
     verifytoken: String,
     verifytokenexpiry: Date,
 }, {

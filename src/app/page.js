@@ -16,16 +16,17 @@ export default function Home() {
 
   return (
     <>
-      <div className=" flex flex-col  justify-center items-center h-[80vh] gap-2">
+      <div className=" flex flex-col  justify-center items-center h-screen gap-2">
         <div className="flex flex-col  justify-center items-center gap-2 sm:gap-8  text-center">
-          <Lottie />
+          {/* <Lottie /> */}
+          <h1 className=" text-5xl sm:text-8xl mb-10 title font-medium">FOUNDER</h1>
 
           <div>
 
-              <div className="flex justify-center items-center gap-1 text-[30px] sm:text-6xl font-semibold flex-wrap">
+              <div className="flex justify-center items-center gap-1 text-[30px] sm:text-6xl font-medium flex-wrap">
 
                 Wlc to the
-                <div className="relative ">
+                <div className="relative">
 
                   <PointerHighlight
                     rectangleClassName="border-black rounded-md p-1"
@@ -41,10 +42,10 @@ export default function Home() {
               </div>
 
               <div>
-                <h1 className=" text-[10px] sm:text-xl">a platform that provide a B-to-B connection</h1>
+                <h1 className=" text-[10px] sm:text-xl mt-6">a platform that provide a B-to-B connection</h1>
               </div>
 
-              <div className=" flex  justify-center gap-2">
+              <div className=" flex  justify-center gap-2 mt-2">
                 <Link href={"/market"} className=" border-b border-b-black">Get started</Link>
                 <Link href={"/"} className=" border-b border-b-black">Read docs</Link>
               </div>

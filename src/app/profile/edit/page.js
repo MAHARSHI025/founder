@@ -138,13 +138,13 @@ function Page() {
                    
                     <div className=' flex flex-col p-5 mt-2'>
                         <label htmlFor="website" className=' text-xs text-neutral-700' >Website</label>
-                        <input type="text" name="website" placeholder="Enter Website url" value={user?.website || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                        <input type="text" name="website" placeholder="Enter Website url" value={user?.website || ''} onChange={handleChange} className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
                        
                         <label htmlFor="instagram" className=' text-xs text-neutral-700' >instagram</label>
-                        <input type="text" name="instagram" placeholder="Enter instagram url" value={user?.instagram || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                        <input type="text" name="instagram" placeholder="Enter instagram url" value={user?.instagram || ''} onChange={handleChange} className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
                        
                         <label htmlFor="linkedin" className=' text-xs text-neutral-700' >linkedin</label>
-                        <input type="text" name="linkedin" placeholder="Enter linkedin url" value={user?.linkedin || ''} onChange={handleChange} required className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
+                        <input type="text" name="linkedin" placeholder="Enter linkedin url" value={user?.linkedin || ''} onChange={handleChange} className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
                        
                     </div>
 
