@@ -11,7 +11,7 @@ import GitHubProvider from "next-auth/providers/github";
 
 const handler = NextAuth({
   providers: [
-    
+
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -21,7 +21,7 @@ const handler = NextAuth({
       async authorize(credentials) {
         await connect();
         const user = await User.findOne({ email: credentials.email });
-        
+
         if (!user) throw new Error('No user found');
         const valid = await bcryptjs.compare(credentials.password, user.password);
         if (!valid) throw new Error('Invalid password');
@@ -48,7 +48,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-   async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account, profile }) {
       if (user) {
         token.id = user.id || token.id;
         token.email = user.email || token.email;
@@ -57,6 +57,8 @@ const handler = NextAuth({
       }
 
       if (account?.provider === "google" || account?.provider === "github") {
+        await connect();
+
         let dbUser = await User.findOne({ email: profile.email });
 
         if (!dbUser) {
