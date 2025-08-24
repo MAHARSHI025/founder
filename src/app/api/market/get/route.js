@@ -9,7 +9,6 @@ connect();
 export async function POST(req) {
     try {
         const allUser = await User.find().populate('posts');
-        console.log("Fetched users with posts:", JSON.stringify(allUser, null, 2));
         
         if (!allUser) {
             return NextResponse.json({ error: "Error in User found" }, { status: 400 });

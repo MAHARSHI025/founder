@@ -26,14 +26,16 @@ export async function POST(req) {
         if (!existingUser) {
             return NextResponse.json({ message: "User not found" }, { status: 400 });
         }
-        if (existingUser.isverified !== true){
-             return NextResponse.json({ message: "Not verified" }, { status: 400 });
-        }
         const isPasswordValid = await bcryptjs.compare(password, existingUser.password);
         if (!isPasswordValid) {
             return NextResponse.json({ message: "Invalid password" }, { status: 400 });
         }
+        if (existingUser.isverified === false){
+             return NextResponse.json({ message: "Not verified" }, { status: 400 });
+        }
         console.log("User logged in:", existingUser);
+        console.log('mmmmmmmm',existingUser.isverified);
+        
 
         return NextResponse.json({
             message: "Login successful",

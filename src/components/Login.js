@@ -36,13 +36,16 @@ function Login() {
         });
 
         setLoading(false);
+        console.log(res);
+
 
         if (res?.ok) {
             toast.success('Successfully logged in!');
             router.push('/profile');
         } else {
-            toast.error('Login failed. Please check your credentials.');
-            setMessage('Invalid email or password');
+            setMessage(res.error)
+            toast.error(res.error || 'Error in login');
+
         }
     };
 
@@ -91,9 +94,38 @@ function Login() {
                     )}
                 </div>
             </form>
+
             <div className='text-center mt-4 '>
                 <button onClick={() => router.push('/signup')} className='cursor-pointer'>
                     Dont have an account? Signup
+                </button>
+            </div>
+            <div className=' flex justify-center items-center mt-4 flex-col gap-2'>
+
+                <button
+                    type="button"
+                    onClick={() => signIn('google', { callbackUrl: '/profile' })}
+                    className='flex cursor-pointer items-center justify-center gap-2 border border-gray-400 rounded-lg px-15 py-4 hover:bg-gray-100'
+                >
+                    <img
+                        src="https://www.svgrepo.com/show/355037/google.svg"
+                        alt="Google"
+                        className="w-6 h-6"
+                    />
+                    Continue with Google
+                </button>
+                <button
+                    type="button"
+                    onClick={() => signIn('github', { callbackUrl: '/profile' })}
+                    className='flex cursor-pointer items-center justify-center gap-2 border border-gray-400 rounded-lg px-15 py-4 hover:bg-gray-100'
+                >
+                    <img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                        alt="GitHub"
+                        className="w-6 h-6"
+                    />
+
+                    Continue with Github
                 </button>
             </div>
         </div>
