@@ -14,12 +14,6 @@ function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/signup');
-    }
-  }, [status, router]);
-
-  useEffect(() => {
     const getContacts = async () => {
       if (!session?.user?.email) return;
 
@@ -28,7 +22,6 @@ function Page() {
           email: session.user.email,
         });
         setData(response.data.user.contacts);
-        console.log("bvhjfxvhhd",response.data);
         
       } catch (err) {
         console.error("Error fetching contacts", err);

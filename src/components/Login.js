@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import ProviderCard from './ProviderCard';
 
 function Login() {
 
@@ -10,11 +11,11 @@ function Login() {
     const { data: session, status } = useSession();
 
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState('');
     const router = useRouter();
 
     useEffect(() => {
         if (status === "authenticated") {
+            toast.success('Successfully logged in!');
             router.push("/profile");
         }
     }, [status, router]);
@@ -27,7 +28,6 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setMessage('');
 
         const res = await signIn('credentials', {
             email: user.email,
@@ -43,11 +43,12 @@ function Login() {
             toast.success('Successfully logged in!');
             router.push('/profile');
         } else {
-            setMessage(res.error)
             toast.error(res.error || 'Error in login');
 
         }
     };
+
+
 
 
     return (
@@ -72,6 +73,7 @@ function Login() {
                         className='border rounded-lg px-2 py-1 border-gray-400'
                     />
                     <input
+                        autoComplete='current-password'
                         type="password"
                         name="password"
                         placeholder="Enter password"
@@ -88,10 +90,6 @@ function Login() {
                     >
                         {loading ? 'Submitting...' : 'Continue'}
                     </button>
-
-                    {message && (
-                        <p className='text-sm text-center mt-2 text-red-500'>{message}</p>
-                    )}
                 </div>
             </form>
 
@@ -100,34 +98,9 @@ function Login() {
                     Dont have an account? Signup
                 </button>
             </div>
-            <div className=' flex justify-center items-center mt-4 flex-col gap-2'>
-
-                <button
-                    type="button"
-                    onClick={() => signIn('google', { callbackUrl: '/profile' })}
-                    className='flex cursor-pointer items-center justify-center gap-2 border border-gray-400 rounded-lg px-15 py-4 hover:bg-gray-100'
-                >
-                    <img
-                        src="https://www.svgrepo.com/show/355037/google.svg"
-                        alt="Google"
-                        className="w-6 h-6"
-                    />
-                    Continue with Google
-                </button>
-                <button
-                    type="button"
-                    onClick={() => signIn('github', { callbackUrl: '/profile' })}
-                    className='flex cursor-pointer items-center justify-center gap-2 border border-gray-400 rounded-lg px-15 py-4 hover:bg-gray-100'
-                >
-                    <img
-                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
-                        alt="GitHub"
-                        className="w-6 h-6"
-                    />
-
-                    Continue with Github
-                </button>
-            </div>
+            <br />
+            <h1 className=' text-center'>or</h1>
+            <ProviderCard />
         </div>
     );
 }

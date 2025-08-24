@@ -11,18 +11,6 @@ import { redirect } from 'next/navigation';
 function Layout({ children }) {
 
     const { data: session, status } = useSession();
-    const [action, setaction] = useState('signup');
-
-    useEffect(() => {
-
-        if (session && status === 'authenticated') {
-            setaction("authenticated");
-        }
-    }, [session, status]);
-    
-    if (!session) {
-        return redirect("/signup");
-    }
 
 
     return (

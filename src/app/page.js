@@ -16,8 +16,8 @@ export default function Home() {
 
   return (
     <>
-      <div className=" flex flex-col  justify-center items-center h-screen gap-2">
-        <div className="flex flex-col  justify-center items-center gap-2 sm:gap-8  text-center">
+      <div className=" flex flex-col  justify-center items-center h-screen w-screen">
+        <div className="flex flex-col  justify-center items-center text-center">
           {/* <Lottie /> */}
           <h1 className=" text-5xl sm:text-8xl mb-10 title font-medium">FOUNDER</h1>
 

@@ -4,10 +4,11 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import ProviderCard from './ProviderCard';
 
 function Signup() {
 
-     const { data: session, status } = useSession();
+    const { data: session, status } = useSession();
 
     const [user, setUser] = useState({
         organization_name: '',
@@ -19,11 +20,11 @@ function Signup() {
     const [message, setMessage] = useState('');
     const router = useRouter()
 
-   useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/profile");
-    }
-  }, [status, router]);
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.push("/profile");
+        }
+    }, [status, router]);
 
 
 
@@ -62,7 +63,7 @@ function Signup() {
     return (
         <div className='h-screen  flex justify-center  flex-col'>
             <button onClick={() => router.push('/')} className=' cursor-pointer flex items-center mb-5'>
-                <span className="material-symbols-outlined"  style={{ fontSize: '16px', marginRight:"5px" }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '16px', marginRight: "5px" }}>
                     arrow_back
                 </span>
                 Home
@@ -118,6 +119,9 @@ function Signup() {
                     Already have an account? Login
                 </button>
             </div>
+            <br />
+            <h1 className=' text-center'>or</h1>
+            <ProviderCard />
         </div>
     )
 }

@@ -11,16 +11,9 @@ function Page() {
   const router = useRouter();
 
   const [user, setUser] = useState({});
-  const [link, setlink] = useState("");
   const [profileFile, setProfileFile] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/profile");
-    }
-  }, [status, router]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,18 +41,16 @@ function Page() {
     try {
       setUploading(true);
       const response = await axios.post("/api/upload", formData);
-      const imageUrl = response.data.url;
-      setlink(imageUrl);
 
       await axios.post("/api/user/image", {
-        link: imageUrl,
+        link: response.data.url,
         email: session?.user.email,
         type,
       });
 
       setUser((prev) => ({
         ...prev,
-        [`${type}image`]: imageUrl,
+        [`${type}image`]: response.data.url,
       }));
     } catch (error) {
       console.error("Upload error:", error);
