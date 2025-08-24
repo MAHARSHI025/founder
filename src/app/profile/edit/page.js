@@ -89,7 +89,7 @@ function Page() {
         <div className='  m-2 mt-15 flex justify-center items-center mx-0'>
 
             <form onSubmit={handleSubmit}>
-                <div className='flex flex-col mx-auto max-w-min border border-gray-300  py-10 rounded-lg drop-shadow-2xl min-w-80 sm:p-6'>
+                <div className='flex flex-col mx-auto max-w-min border border-gray-300  py-10 rounded-lg  min-w-80 sm:p-6'>
                     <h1 className='text-2xl font-bold text-center mb-3'>Update profile</h1>
                     <div className='text-center mb-4'>
 
@@ -127,7 +127,7 @@ function Page() {
 
                         </div>
                     </div>
-                    <div className=' flex flex-col p-5 mt-2'>
+                    <div className=' flex flex-col py-1 '>
                         <label className=' text-xs text-neutral-700 mb-2' >Badges</label>
                         <BadgeDropdown 
                             selectedBadges={selectedBadges}
@@ -136,7 +136,7 @@ function Page() {
                         />
                     </div>
                    
-                    <div className=' flex flex-col p-5 mt-2'>
+                    <div className=' flex flex-col py-5 mt-2'>
                         <label htmlFor="website" className=' text-xs text-neutral-700' >Website</label>
                         <input type="text" name="website" placeholder="Enter Website url" value={user?.website || ''} onChange={handleChange} className='border rounded-lg mb-2 px-2 py-1 border-gray-400' />
                        

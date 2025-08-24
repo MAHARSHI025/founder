@@ -8,11 +8,10 @@ import bcryptjs from 'bcryptjs';
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 
-connect();
 
 const handler = NextAuth({
   providers: [
-
+    
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -20,8 +19,9 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        await connect();
         const user = await User.findOne({ email: credentials.email });
-
+        
         if (!user) throw new Error('No user found');
         const valid = await bcryptjs.compare(credentials.password, user.password);
         if (!valid) throw new Error('Invalid password');
@@ -91,7 +91,7 @@ const handler = NextAuth({
     strategy: 'jwt',
   },
   pages: {
-    signIn: '/',
+    signIn: '/login',
   },
 });
 

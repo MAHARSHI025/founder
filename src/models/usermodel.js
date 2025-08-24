@@ -36,12 +36,12 @@ const userSchema = new mongoose.Schema({
     profileimage: {
         type: String,
         // required: true,
-        default: "hello.png"
+        default: "https://blocks.astratic.com/img/general-img-landscape.png"
     },
     coverimage: {
         type: String,
         // required: true,
-        default: "hello.png"
+        default: "https://blocks.astratic.com/img/general-img-landscape.png"
     },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
