@@ -12,7 +12,7 @@ import Lottie from "@/components/Lottie";
 export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  
 
   return (
     <>
