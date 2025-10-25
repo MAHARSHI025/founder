@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 
 
-connect();
+await connect();
 
 export async function POST(req) {
     try {

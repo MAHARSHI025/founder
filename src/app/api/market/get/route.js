@@ -4,10 +4,10 @@ import User from "@/models/usermodel";
 import Post from "@/models/postmodel";
 import mongoose from "mongoose";
 
-connect();
 
 export async function POST(req) {
   try {
+    await connect();
     const body = await req.json();
     const limit = parseInt(body.limit) || 4;
 

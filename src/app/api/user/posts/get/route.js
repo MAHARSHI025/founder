@@ -4,7 +4,7 @@ import User from "@/models/usermodel";
 import bcryptjs from "bcryptjs";
 import Post from "@/models/postmodel";
 
-connect();
+await connect();
 
 export async function POST(req) {
     try {

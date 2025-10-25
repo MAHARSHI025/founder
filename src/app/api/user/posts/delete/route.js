@@ -3,7 +3,7 @@ import { connect } from "@/dbconfig/dbconfig";
 import Post from "@/models/postmodel";
 import cloudinary from "@/lib/cloudinary";
 
-connect();
+await connect();
 
 export async function POST(req) {
     try {

@@ -3,7 +3,7 @@ import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/usermodel";
 import Contact from "@/models/contactmodel";
 
-connect();
+await connect();
 
 export async function POST(req) {
     try {
