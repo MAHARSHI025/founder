@@ -42,7 +42,7 @@ export async function POST(req) {
             user: {
                 _id: existingUser._id,
                 organization_name: existingUser.organization_name,
-                email: existingUser.email,
+                email: existingUser.email,  
             },
         }, { status: 200 });
     } catch (error) {
