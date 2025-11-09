@@ -46,8 +46,8 @@ export default function Home() {
               </div>
 
               <div className=" flex  justify-center gap-2 mt-2">
-                <Link href={"/market"} className=" border-b border-b-black">Get started</Link>
-                <Link href={"/"} className=" border-b border-b-black">Read docs</Link>
+                <Link href={"/market"} style={{boxShadow:'2px 2px 0px black'}} className=" p-2 rounded-2xl border border-black  text-black">Get started</Link>
+                <Link href={"/"} style={{boxShadow:'2px 2px 0px black'}} className=" p-2 rounded-2xl border border-black  text-black">Read docs</Link>
               </div>
           </div>
         </div>
