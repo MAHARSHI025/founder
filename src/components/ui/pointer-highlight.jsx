@@ -67,8 +67,8 @@ export function PointerHighlight({
             initial={{ opacity: 0 }}
             whileInView={{
               opacity: 1,
-              x: dimensions.width + 4,
-              y: dimensions.height + 4,
+              x: dimensions.width + -5,
+              y: dimensions.height + -5,
             }}
             style={{
               rotate: -90,
@@ -78,7 +78,7 @@ export function PointerHighlight({
               duration: 1,
               ease: "easeInOut",
             }}>
-            <Pointer className={cn("h-5 w-5 text-blue-500", pointerClassName)} />
+            <Pointer className={cn("h-4 w-4 text-blue-500", pointerClassName)} />
           </motion.div>
         </motion.div>
       )}
