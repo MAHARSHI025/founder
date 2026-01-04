@@ -28,7 +28,7 @@
     "motion": "^12.23.12",
     "next": "^15.3.3",
     "next-auth": "^4.24.11",
-    "nodemailer": "^6.10.1",
+    "nodemailer": "^7.0.12",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hot-toast": "^2.5.2",
