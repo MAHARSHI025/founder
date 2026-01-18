@@ -9,6 +9,10 @@ function distance(a, b) {
 }
 
 export async function POST(req) {
+
+    console.log('Called');
+    
+
     const { descriptor } = await req.json()
 
     if (!descriptor) {

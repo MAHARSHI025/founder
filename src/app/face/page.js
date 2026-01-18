@@ -3,14 +3,15 @@
 import * as faceapi from 'face-api.js'
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast';
 
 export default function FaceRegister() {
-    
+
     const videoRef = useRef(null)
     const { data: session, status } = useSession();
     const router = useRouter();
+    const [faceDetected, setFaceDetected] = useState(false)
 
     useEffect(() => {
         if (status === 'unauthenticated' || !session?.user?.email) {
@@ -72,11 +73,27 @@ export default function FaceRegister() {
         }
     }
 
+    let detectInterval = null
+    function startLiveDetection(videoRef, setFaceDetected) {
+        detectInterval = setInterval(async () => {
+            if (!videoRef.current) return
+
+            const detection = await faceapi.detectSingleFace(
+                videoRef.current,
+                new faceapi.TinyFaceDetectorOptions()
+            )
+
+            setFaceDetected(!!detection)
+        }, 300) // every 300ms
+    }
+
     return (
         <div className=' flex justify-center items-center flex-col h-screen'>
             <h1>Face Register</h1>
-            <video ref={videoRef} autoPlay muted width={300} height={300} className=' rounded-full' />
+            <video ref={videoRef} autoPlay muted width={300} height={300} className=' rounded-2xl' style={{ transform: 'scaleX(-1)' }} />
             <br />
+            <h1>{faceDetected ? "Face Detected" : "No Face Detected"}</h1>
+            <button onClick={() => startLiveDetection(videoRef, setFaceDetected)} className="px-4 py-2 bg-blue-500 text-white rounded">Live</button>
             <button onClick={registerFace} className="px-4 py-2 bg-blue-500 text-white rounded">Register Face</button>
         </div>
     )
