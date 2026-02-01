@@ -34,7 +34,7 @@ export async function POST(req) {
             })
         } else {
             return NextResponse.json({
-                success: true,
+                success: false,
                 email: 'Another man is detected',
             })
         }

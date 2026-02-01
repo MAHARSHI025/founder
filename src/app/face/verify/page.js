@@ -1,191 +1,170 @@
-'use client'
-
+"use client"
 import FaceIdLoader from '@/components/FaceIdLoader'
-import * as faceapi from 'face-api.js'
+import * as faceapi from "face-api.js";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+
 
 export default function FaceLogin() {
     const videoRef = useRef(null)
     const detectIntervalRef = useRef(null)
-    const loginInProgressRef = useRef(false)
+    const registeringRef = useRef(false);
 
-    const router = useRouter()
-    const [faceDetected, setFaceDetected] = useState(false)
-    const [modelsLoaded, setModelsLoaded] = useState(false)
-    const [running, setRunning] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [faceDetected, setFaceDetected] = useState(false);
+    const [modelsLoaded, setModelsLoaded] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
-    useEffect(() => {
-        async function loadModels() {
-            await Promise.all([
-                faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-                faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-                faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-            ])
-            setModelsLoaded(true)
-        }
-        loadModels()
+    /* ================= CAMERA CONTROL ================= */
 
-    }, [])
-
-
-    // useEffect(() => {
-        
-    //     if (faceDetected) {
-    //             stopCamera()
-
-    //         // loginFace()
-    //     }
-
-    // }, [faceDetected])
-
-    async function startCamera() {
-
-        if (!modelsLoaded) {
-            toast.error('Models are still loading')
-            return
-        }
-
-        if (videoRef.current && videoRef.current.srcObject) return
-
+    const startCamera = async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-            videoRef.current.srcObject = stream
-            startLiveDetection()
-            setRunning(true)
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: "user" },
+            });
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
         } catch (err) {
-            console.error(err)
+            registerFace()
             toast.error('Camera permission denied')
         }
-    }
+    };
 
-    function stopCamera() {
-
-
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject
-            stream.getTracks().forEach(track => track.stop())
-            videoRef.current.srcObject = null
-
+    const stopCamera = () => {
+        const stream = videoRef.current?.srcObject;
+        if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
+            videoRef.current.srcObject = null;
         }
+    };
 
-        if (detectIntervalRef.current) {
-            clearInterval(detectIntervalRef.current)
-            detectIntervalRef.current = null
-        }
-        setRunning(false)
+    /* ================= LOAD MODELS ================= */
 
-        setFaceDetected(false)
-    }
+    useEffect(() => {
+        let mounted = true;
 
-    function startLiveDetection() {
+        const loadModels = async () => {
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+                faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+                faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+            ]);
+
+            if (mounted) {
+                setModelsLoaded(true);
+                setLoading(false);
+                startCamera();
+            }
+        };
+
+        loadModels();
+
+        return () => {
+            mounted = false;
+            stopCamera();
+            if (detectIntervalRef.current) {
+                clearInterval(detectIntervalRef.current)
+            }
+        };
+    }, []);
+
+    /* ================= LIVE FACE DETECTION ================= */
+
+    useEffect(() => {
+        if (!modelsLoaded || !videoRef.current) return;
+
         detectIntervalRef.current = setInterval(async () => {
-            if (!videoRef.current || loginInProgressRef.current) return
+            if (!videoRef.current) return;
 
             const detection = await faceapi.detectSingleFace(
                 videoRef.current,
-                new faceapi.TinyFaceDetectorOptions()
-            )
-
-            if (detection) {
-                loginInProgressRef.current = true
-
-                clearInterval(detectIntervalRef.current)
-                detectIntervalRef.current = null
-
-                setFaceDetected(true)
-                loginFace()
+                new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 416,
+                    scoreThreshold: 0.5,
+                })
+            );
+            if (detection && !registeringRef.current) {
+                registeringRef.current = true;
+                registerFace();
             }
-        }, 300)
-    }
 
+            setFaceDetected(!!detection);
+        }, 300);
 
-    async function loginFace() {
+        return () => clearInterval(detectIntervalRef.current);
+    }, [modelsLoaded]);
 
-        console.log('login called');
+    /* ================= REGISTER FACE ================= */
 
-        setLoading(true)
-
-        if (!videoRef.current) return
+    const registerFace = async () => {
 
         const result = await faceapi
             .detectSingleFace(
                 videoRef.current,
-                new faceapi.TinyFaceDetectorOptions()
+                new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 416,
+                    scoreThreshold: 0.5,
+                })
             )
             .withFaceLandmarks()
-            .withFaceDescriptor()
+            .withFaceDescriptor();
 
         if (!result) {
+            registerFace()
             toast.error('No face detected')
             return
         }
 
-        const res = await fetch('/api/face/verify', {
-            method: 'POST',
-            body: JSON.stringify({
-                descriptor: Array.from(result.descriptor),
-            }),
-        })
-        const data = await res.json()
+        stopCamera();
 
-        loginInProgressRef.current = false
+        clearInterval(detectIntervalRef.current);
 
-        if (!res.ok) {
-            loginInProgressRef.current = false
-            toast.error('Face verification failed')
-            setLoading(false)
-            stopCamera()
+
+        const response = await fetch(
+            "/api/face/verify",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    descriptor: Array.from(result.descriptor),
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success || response.status !== 200) {
+            toast.error("Error registering face");
+            registerFace()
+            return
+        } else {
+            toast.success("Welcome " + data?.email);
+            router.push('/')
             return
         }
-
-        setLoading(false)
-        toast.success(`Welcome ${data.email}`)
-        router.push('/')
-    }
+    };
 
     return (
-        <>
-            {loading ?
-                <FaceIdLoader />
-                :
+        <div className="flex justify-center items-center flex-col h-screen gap-4 bg-gray-100">
+            <h1 className="text-xl font-semibold">Face Register</h1>
 
-                <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-                    <h1 className="text-xl font-semibold">Face Login</h1>
+            {loading && <p>Loading models...</p>}
 
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        muted
-                        className="rounded-full"
-                        style={{
-                            transform: 'scaleX(-1)',
-                            border: faceDetected ? '5px solid green' : '5px solid red',
-                            height: '200px',
-                            width: '200px',
-                            objectFit: 'cover',
-                        }}
-                    />
+            <video
+                ref={videoRef}
+                autoPlay
+                muted
+                width={300}
+                height={300}
+                className={`rounded-full h-72 w-72 border-2 ${faceDetected ? "border-green-600" : "border-red-600"}`}
+                style={{ transform: "scaleX(-1)" }}
+            />
 
-                    <div className="flex gap-3">
-                        <button
-                            onClick={running ? stopCamera : startCamera}
-                            className={`px-4 py-2 ${running ? 'bg-red-500' : 'bg-green-500'} text-white rounded`}
-                        >
-                            {running ? 'Stop Camera' : 'Start Camera'}
-                        </button>
-                        {/* <button
-                            onClick={loginFace}
-                            className="px-4 py-2 bg-blue-500 text-white rounded"
-                        >
-                            Login
-                        </button> */}
-                    </div>
-                </div>
-            }
-        </>
 
-    )
+        </div>
+    );
 }
