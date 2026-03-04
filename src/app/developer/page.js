@@ -172,7 +172,7 @@ function Page() {
             className="shrink-0 w-full md:w-auto"
           >
             <div className="bg-white/5 border border-white/10 rounded-2xl p-5 font-mono text-sm text-neutral-300 max-w-xs mx-auto md:mx-0">
-              <p className="text-white/40 text-xs mb-2">// developer.js</p>
+              <p className="text-white/40 text-xs mb-2"> developer.js</p>
               <p>
                 <span className="text-purple-400">const</span>{" "}
                 <span className="text-blue-400">dev</span> = {"{"}
