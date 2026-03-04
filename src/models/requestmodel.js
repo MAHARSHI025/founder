@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 const requestSchema = new mongoose.Schema({
 
     sender_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     receiver_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     status: {

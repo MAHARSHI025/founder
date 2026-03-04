@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import Postpopup from './Postpopup';
@@ -20,37 +19,42 @@ import {
   IconPhoto,
 } from '@tabler/icons-react';
 
-function MarketCard({ user }) {
+function MarketCard({ user, isRequested = false, onRequestSent }) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const router = useRouter();
 
   if (!user) return null;
 
   const contacthandle = async (receiver_id) => {
+    if (isRequested) {
+      return;
+    }
+
     if (!session?.user?.id) {
-      toast.error('Please login to add contacts');
+      toast.error('Please login to send a request');
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await axios.post('/api/contact/add', {
+      await axios.post('/api/request/add', {
         sender_id: session.user.id,
         receiver_id: receiver_id,
       });
-      toast.success('Contact Added Successfully');
-      router.push('/contact');
+      toast.success('Connection request sent');
+      if (onRequestSent) {
+        onRequestSent(receiver_id);
+      }
     } catch (error) {
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else if (error.response?.status === 409) {
-        toast.error('Contact already exists');
+        toast.error('Request already exists or you are already connected');
       } else if (error.response?.status === 400) {
         toast.error('Invalid request');
       } else {
-        toast.error('Failed to add contact. Please try again.');
+        toast.error('Failed to send request. Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -196,12 +200,16 @@ function MarketCard({ user }) {
         <div className="px-4 pt-3 pb-4 mt-auto flex gap-2">
           <button
             onClick={() => contacthandle(user._id)}
-            disabled={isLoading}
+            disabled={isLoading || isRequested}
             className="flex-1 inline-flex items-center justify-center gap-1.5 bg-black text-white font-semibold py-2.5 rounded-xl hover:bg-neutral-800 transition-colors text-sm disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <>
-                <IconLoader2 size={15} className="animate-spin" /> Adding...
+                <IconLoader2 size={15} className="animate-spin" /> Sending...
+              </>
+            ) : isRequested ? (
+              <>
+                <IconCheck size={15} /> Requested
               </>
             ) : (
               <>

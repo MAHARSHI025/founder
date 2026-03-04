@@ -1,16 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/usermodel";
 import Request from "@/models/requestmodel";
 
-connect();
+await connect();
 
 export async function POST(req) {
     try {
         const body = await req.json();
         const { receiver_id } = body;
-        console.log(receiver_id);
-        
 
         if (!receiver_id) {
             return NextResponse.json(
@@ -21,15 +19,31 @@ export async function POST(req) {
 
         const user = await User.findOne({ _id: receiver_id });
         if (!user) {
-            return NextResponse.json({ message: "Sender not found" }, { status: 400 });
+            return NextResponse.json({ message: "Receiver not found" }, { status: 404 });
         }
 
-        const requests = await Request.find({ receiver_id: receiver_id })
+        const requests = await Request.find({ receiver_id }).sort({ createdAt: -1 }).lean();
+
+        const senderIds = requests.map((reqItem) => reqItem.sender_id).filter(Boolean);
+        const senders = await User.find({ _id: { $in: senderIds } })
+            .select('organization_name email city profileimage isverified')
+            .lean();
+
+        const senderMap = new Map(senders.map((sender) => [sender._id.toString(), sender]));
+
+        const formattedRequests = requests.map((reqItem) => ({
+            _id: reqItem._id,
+            sender_id: reqItem.sender_id,
+            receiver_id: reqItem.receiver_id,
+            status: reqItem.status,
+            createdAt: reqItem.createdAt,
+            sender: senderMap.get(reqItem.sender_id?.toString()) || null
+        }));
 
 
         return NextResponse.json({
             message: "request fetch successfully",
-            requests
+            requests: formattedRequests
         }, { status: 200 });
 
     } catch (error) {

@@ -25,6 +25,7 @@ const fadeUp = {
 function Page() {
   const { data: session, status } = useSession();
   const [users, setUsers] = useState([]);
+  const [outgoingRequestIds, setOutgoingRequestIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -39,6 +40,33 @@ function Page() {
   useEffect(() => {
     usersRef.current = users;
   }, [users]);
+
+  useEffect(() => {
+    const fetchOutgoingRequests = async () => {
+      if (!session?.user?.id) return;
+
+      try {
+        const response = await axios.post('/api/request/outgoing', {
+          sender_id: session.user.id,
+        });
+        setOutgoingRequestIds(new Set(response?.data?.receiverIds || []));
+      } catch (err) {
+        console.error('Error fetching outgoing requests', err);
+      }
+    };
+
+    if (status === 'authenticated') {
+      fetchOutgoingRequests();
+    }
+  }, [session?.user?.id, status]);
+
+  const handleRequestSent = useCallback((receiverId) => {
+    setOutgoingRequestIds((prev) => {
+      const next = new Set(prev);
+      next.add(receiverId);
+      return next;
+    });
+  }, []);
 
   const fetchUsers = useCallback(async (pageNumber) => {
     if (isFetchingRef.current || requestedPagesRef.current.has(pageNumber)) {
@@ -167,7 +195,11 @@ function Page() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: (index % limit) * 0.06 }}
               >
-                <MarketCard user={temp} />
+                <MarketCard
+                  user={temp}
+                  isRequested={outgoingRequestIds.has(temp._id)}
+                  onRequestSent={handleRequestSent}
+                />
               </motion.div>
             ))}
           </div>

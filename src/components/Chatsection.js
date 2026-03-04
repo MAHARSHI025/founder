@@ -101,10 +101,10 @@ export default function Chatsection() {
   if (loading) return <MainLoader />;
 
   return (
-    <div className="w-full max-w-4xl mx-auto h-[90vh] flex flex-col">
+    <div className="w-full max-w-4xl mx-auto h-[90dvh] flex flex-col">
       <Chattopsection email={urlemail || "Select a contact"} />
 
-      <div className="flex-1 bg-neutral-50/60">
+      <div className="flex-1 bg-neutral-50/60 flex flex-col p-4 rounded-2xl mt-4 justify-between items-center">
         {chat.length > 0 ? (
           <Scrollhandle trigger={chat.length}>
             {chat.map((msg, index) => {

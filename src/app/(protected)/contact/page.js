@@ -62,6 +62,10 @@ function Page() {
     );
   }, [data, search]);
 
+  const handleContactDeleted = (contactId) => {
+    setData((prev) => prev.filter((item) => item._id !== contactId));
+  };
+
   if (loading || status === 'loading') return <MainLoader />;
 
   return (
@@ -124,16 +128,19 @@ function Page() {
               <div className="divide-y divide-neutral-100">
                 {filtered.map((item, index) => (
                   <motion.div
-                    key={item.email || index}
+                    key={item._id || item.email || index}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.04 }}
                   >
                     <Contactcard
+                      _id={item._id}
+                      currentUserId={session?.user?.id}
                       email={item.email}
                       organization_name={item.organization_name}
                       city={item.city}
                       image={item.profileimage}
+                      onDelete={handleContactDeleted}
                     />
                   </motion.div>
                 ))}

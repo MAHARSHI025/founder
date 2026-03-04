@@ -33,7 +33,7 @@ function Scrollhandle({ children, trigger }) {
   return (
     <div
       ref={scrollRef}
-      className="flex flex-col  max-w-[600px] w-[calc(100vw-10px)]  h-[70vh] mb-20  overflow-y-scroll scrollbar-hide p-2 scroll-smooth"
+      className="flex flex-col  max-w-3xl w-[calc(100vw-10px)]  h-[70vh] mb-20  overflow-y-scroll scrollbar-hide p-2 scroll-smooth"
     >
       {children}
     </div>

@@ -20,7 +20,7 @@ export default function Page() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
-          className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm"
+          className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm "
         >
           <Suspense
             fallback={

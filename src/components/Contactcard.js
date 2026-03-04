@@ -1,5 +1,10 @@
+"use client";
+
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import ConfirmDeletePopup from './ConfirmDeletePopup';
 import {
   IconMessageCircle,
   IconTrash,
@@ -7,8 +12,33 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 
-function Contactcard({ email, organization_name, city, image }) {
+function Contactcard({ _id, currentUserId, email, organization_name, city, image, onDelete }) {
   const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const handleDeleteContact = async () => {
+    if (!_id || !currentUserId || isDeleting) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await axios.post('/api/contact/delete', {
+        user_id: currentUserId,
+        contact_id: _id,
+      });
+      toast.success('Contact removed');
+      if (onDelete) {
+        onDelete(_id);
+      }
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Failed to remove contact';
+      toast.error(message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="flex items-center gap-4 px-4 sm:px-5 py-3.5 hover:bg-neutral-50 transition-colors">
@@ -57,12 +87,28 @@ function Contactcard({ email, organization_name, city, image }) {
           <IconMessageCircle size={18} />
         </button>
         <button
+          onClick={() => setShowDeletePopup(true)}
+          disabled={isDeleting}
           className="p-2 rounded-lg text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
           title="Remove contact"
         >
           <IconTrash size={18} />
         </button>
       </div>
+
+      <ConfirmDeletePopup
+        open={showDeletePopup}
+        title="Delete Contact"
+        message={`Are you sure you want to remove ${organization_name || 'this contact'}?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={isDeleting}
+        onCancel={() => setShowDeletePopup(false)}
+        onConfirm={async () => {
+          await handleDeleteContact();
+          setShowDeletePopup(false);
+        }}
+      />
     </div>
   );
 }
