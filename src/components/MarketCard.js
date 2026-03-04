@@ -6,162 +6,224 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import Postpopup from './Postpopup';
-import Link from 'next/link';
+import {
+  IconCheck,
+  IconMapPin,
+  IconUsersGroup,
+  IconArticle,
+  IconWorld,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconUserPlus,
+  IconLoader2,
+  IconUser,
+  IconPhoto,
+} from '@tabler/icons-react';
 
 function MarketCard({ user }) {
-    const { data: session, status } = useSession();
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const router = useRouter();
 
+  if (!user) return null;
 
-    const router = useRouter()
-
-    if (!user || user.length === 0) return <p>No users available</p>;
-
-    const contacthandle = async (receiver_id) => {
-        if (!session?.user?.id) {
-            toast.error("Please login to add contacts");
-            return;
-        }
-
-        setIsLoading(true);
-        try {
-            const response = await axios.post('/api/contact/add', {
-                sender_id: session.user.id,
-                receiver_id: receiver_id
-            });
-
-            console.log(response.data);
-            toast.success("Contact Added Successfully");
-            router.push("/contact");
-
-        } catch (error) {
-            console.log("error", error);
-
-            if (error.response?.data?.message) {
-                toast.error(error.response.data.message);
-            } else if (error.response?.status === 409) {
-                toast.error("Contact already exists");
-            } else if (error.response?.status === 400) {
-                toast.error("Invalid request");
-            } else {
-                toast.error("Failed to add contact. Please try again.");
-            }
-        } finally {
-            setIsLoading(false);
-        }
+  const contacthandle = async (receiver_id) => {
+    if (!session?.user?.id) {
+      toast.error('Please login to add contacts');
+      return;
     }
 
-    return (
-            <div className="flex flex-col justify-between shadow-xs border rounded-xl profile-card bg-white ">
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/api/contact/add', {
+        sender_id: session.user.id,
+        receiver_id: receiver_id,
+      });
+      toast.success('Contact Added Successfully');
+      router.push('/contact');
+    } catch (error) {
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else if (error.response?.status === 409) {
+        toast.error('Contact already exists');
+      } else if (error.response?.status === 400) {
+        toast.error('Invalid request');
+      } else {
+        toast.error('Failed to add contact. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                <div className="top border-2 border-gray-800 rounded-lg max-w-3xl relative">
-                    <img className="w-full object-cover h-40 rounded-lg" src={user?.coverimage} alt="" loading='lazy' />
-                </div>
+  const hasSocials = user?.linkedin || user?.instagram || user?.website;
 
-                <div className="flex profile-image items-end p-1">
-                    <img className="h-20 w-20 bg-cover rounded-full border-2 border-white object-cover" loading='lazy' src={user?.profileimage} alt="" />
-                    <div className='flex flex-col ml-3'>
-                        <div className='flex items-center'>
-                            <h1 className="font-bold text-2xl">{user?.organization_name}</h1>
-                            {user?.isverified &&
-                                <span className="material-symbols-outlined text-green-600">
-                                    check_circle
-                                </span>}
-                        </div>
-
-                        <h1 className='font-light text-xs text-gray-500'>
-                            {user?.city || "City not provided"}
-                        </h1>
-                        <button onClick={() => setShowPopup(true)} className={`absolute right-5 bottom-2 px-4 cursor-pointer border p-1 rounded-xl text-black border-neutral-400`}>
-                            Posts
-                        </button>
-                        {showPopup && (
-                            <Postpopup posts={user} onClose={() => setShowPopup(false)} />
-                        )}
-                    </div>
-                </div>
-
-                {/* {user?.badges?.map((badges,index)=>(
-                    <div key={index}>
-                        <h1>{badges}</h1>
-                    </div>
-                ))} */}
-                <h3 className='ml-6'>{user?.description}</h3>
-                <h3 className='ml-6'>{user?.bio}</h3>
-                <h3 className='ml-6'>{user?.about}</h3>
-
-                <div className="flex gap-4 ml-6 mt-15 grayscale-100">
-                    {user?.linkedin && (
-                        <a
-                            href={user.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:opacity-80 transition-opacity"
-                        >
-                            <img
-                                width={25}
-                                height={25}
-                                src="https://www.citypng.com/public/uploads/preview/hd-linkedin-square-black-icon-transparent-background-7017516949739946gsykkwdmd.png?v=2025061905"
-                                alt="LinkedIn Profile"
-                            />
-                        </a>
-                    )}
-                    {user?.instagram && (
-                        <a
-                            href={user.instagram}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:opacity-80 transition-opacity"
-                        >
-                            <img
-                                width={25}
-                                height={25}
-                                src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjk4Mi1kMi0wNC5wbmc.png"
-                                alt="Instagram Profile"
-                            />
-                        </a>
-                    )}
-                    {user?.website && (
-                        <a
-                            href={user.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:opacity-80 transition-opacity"
-                        >
-                            <img
-                                width={25}
-                                height={25}
-                                src="https://cdn-icons-png.flaticon.com/512/3037/3037366.png"
-                                alt="Instagram Profile"
-                            />
-                        </a>
-                    )}
-                </div>
-
-
-
-                <div className='flex justify-between items-center'>
-                    <h3 className='font-light text-xs text-gray-500 mt-5 ml-6'>
-                        Last updated at {user?.updatedAt?.slice(0, 10)}
-                    </h3>
-                    <h3 className='font-light text-xs text-gray-500 mt-5 mr-6'>
-                        Contact by {user?.contacts.length}
-                    </h3>
-                </div>
-
-                <button
-                    onClick={() => contacthandle(user._id)}
-                    disabled={isLoading}
-                    className={`bg-black p-2 rounded-2xl text-white mt-2 cursor-pointer ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                    {isLoading ? 'Adding...' : 'Contact us'}
-                </button>
+  return (
+    <>
+      <div className="flex flex-col bg-white border border-neutral-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full">
+        {/* Cover Image */}
+        <div className="relative h-36 sm:h-40 bg-neutral-100">
+          {user?.coverimage ? (
+            <img
+              className="w-full h-full object-cover"
+              src={user.coverimage}
+              alt=""
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full bg-linear-to-br from-neutral-200 to-neutral-300 flex items-center justify-center">
+              <IconPhoto size={32} className="text-neutral-400" />
             </div>
+          )}
 
+          {/* Badges overlay */}
+          {user?.badges && user.badges.length > 0 && (
+            <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+              {user.badges.slice(0, 3).map((badge, i) => (
+                <span
+                  key={i}
+                  className="bg-white/90 backdrop-blur-sm text-[10px] font-semibold px-2 py-0.5 rounded-full text-neutral-700"
+                >
+                  {badge}
+                </span>
+              ))}
+              {user.badges.length > 3 && (
+                <span className="bg-white/90 backdrop-blur-sm text-[10px] font-semibold px-2 py-0.5 rounded-full text-neutral-500">
+                  +{user.badges.length - 3}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
 
-    );
+        {/* Avatar + Name area */}
+        <div className="relative px-4 pt-0">
+          {/* Avatar - overlaps cover */}
+          <div className="relative -mt-8">
+            {user?.profileimage ? (
+              <img
+                className="h-16 w-16 rounded-full border-[3px] border-white object-cover shadow-sm"
+                src={user.profileimage}
+                alt=""
+                loading="lazy"
+              />
+            ) : (
+              <div className="h-16 w-16 rounded-full border-[3px] border-white bg-neutral-100 flex items-center justify-center shadow-sm">
+                <IconUser size={24} className="text-neutral-400" />
+              </div>
+            )}
+          </div>
+
+          {/* Name + Location */}
+          <div className="mt-2">
+            <div className="flex items-center gap-1.5">
+              <h2 className="font-bold text-lg leading-tight truncate">
+                {user?.organization_name}
+              </h2>
+              {user?.isverified && (
+                <span className="bg-green-500 text-white rounded-full p-0.5 shrink-0">
+                  <IconCheck size={12} stroke={3} />
+                </span>
+              )}
+            </div>
+            {user?.city && (
+              <p className="text-xs text-neutral-500 flex items-center gap-0.5 mt-0.5">
+                <IconMapPin size={12} /> {user.city}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="px-4 mt-2.5 flex-1">
+          {user?.description && (
+            <p className="text-sm text-neutral-700 leading-relaxed line-clamp-2">
+              {user.description}
+            </p>
+          )}
+          {user?.bio && (
+            <p className="text-xs text-neutral-500 mt-1 line-clamp-1">{user.bio}</p>
+          )}
+        </div>
+
+        {/* Social + Meta */}
+        <div className="px-4 mt-3">
+          <div className="flex items-center justify-between text-xs text-neutral-400">
+            <span className="flex items-center gap-1">
+              <IconUsersGroup size={13} /> {user?.contacts?.length || 0} contacts
+            </span>
+            <span>{user?.updatedAt?.slice(0, 10)}</span>
+          </div>
+
+          {hasSocials && (
+            <div className="flex items-center gap-2 mt-2">
+              {user.linkedin && (
+                <a
+                  href={user.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-400 hover:text-black transition-colors"
+                >
+                  <IconBrandLinkedin size={18} />
+                </a>
+              )}
+              {user.instagram && (
+                <a
+                  href={user.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-400 hover:text-black transition-colors"
+                >
+                  <IconBrandInstagram size={18} />
+                </a>
+              )}
+              {user.website && (
+                <a
+                  href={user.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-400 hover:text-black transition-colors"
+                >
+                  <IconWorld size={18} />
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="px-4 pt-3 pb-4 mt-auto flex gap-2">
+          <button
+            onClick={() => contacthandle(user._id)}
+            disabled={isLoading}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-black text-white font-semibold py-2.5 rounded-xl hover:bg-neutral-800 transition-colors text-sm disabled:opacity-50 cursor-pointer"
+          >
+            {isLoading ? (
+              <>
+                <IconLoader2 size={15} className="animate-spin" /> Adding...
+              </>
+            ) : (
+              <>
+                <IconUserPlus size={15} /> Connect
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => setShowPopup(true)}
+            className="inline-flex items-center justify-center gap-1.5 border border-neutral-200 font-semibold py-2.5 px-4 rounded-xl hover:bg-neutral-50 transition-colors text-sm cursor-pointer"
+          >
+            <IconArticle size={15} /> Posts
+          </button>
+        </div>
+      </div>
+
+      {/* Post Popup */}
+      {showPopup && (
+        <Postpopup posts={user} onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
 }
 
 export default MarketCard;

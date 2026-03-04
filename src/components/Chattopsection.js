@@ -1,23 +1,39 @@
-import { useRouter } from 'next/navigation'
-import React from 'react'
+"use client";
+
+import { useRouter } from "next/navigation";
+import React from "react";
+import { IconArrowLeft, IconPointFilled } from "@tabler/icons-react";
 
 function Chattopsection({ email }) {
+    const router = useRouter();
+    const initial = email ? email.charAt(0).toUpperCase() : "?";
 
-    const router = useRouter()
+    return (
+        <div className="sticky top-0 z-10 w-full bg-white/95 backdrop-blur border-b border-neutral-200 px-3 sm:px-4 py-3">
+            <div className="flex items-center gap-3">
+                <button
+                    className="h-9 w-9 rounded-lg border border-neutral-200 flex items-center justify-center cursor-pointer hover:bg-neutral-50 transition-colors"
+                    onClick={() => router.push("/contact")}
+                    aria-label="Back to contacts"
+                >
+                    <IconArrowLeft size={18} />
+                </button>
 
-    return ( 
-        <div className='  bg-white shadow sticky top-0 p-4 flex gap-2 items-center w-[calc(100vw-10px)] min-w-2xs max-w-7xl' >
-            <button className=' flex cursor-pointer' onClick={() => router.push("/contact")}><span className="material-symbols-outlined "
-                style={{
-                    fontSize:"15px",
-                    fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 100, 'opsz' 30"
-                }}
-            >
-                arrow_back
-            </span></button>
-            <h1>{email}</h1>
+                <div className="h-9 w-9 rounded-full bg-neutral-100 text-neutral-700 flex items-center justify-center text-sm font-semibold shrink-0">
+                    {initial}
+                </div>
+
+                <div className="min-w-0 flex-1">
+                    <h1 className="text-sm sm:text-base font-semibold text-neutral-900 truncate">
+                        {email || "Unknown contact"}
+                    </h1>
+                    <p className="text-xs text-neutral-400 flex items-center gap-1">
+                        <IconPointFilled size={10} className="text-green-500" /> Active chat
+                    </p>
+                </div>
+            </div>
         </div>
-    )
+    );
 }
 
-export default Chattopsection
+export default Chattopsection;

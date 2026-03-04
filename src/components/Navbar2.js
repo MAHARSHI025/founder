@@ -24,8 +24,7 @@ function Navbar2() {
                 <MenuItem item="About" active={active} setActive={setActive}>
                     <div className="flex flex-col space-y-2 ">
                         <HoveredLink href="/about">Our Story</HoveredLink >
-                        <HoveredLink href="/about">Portfolio</HoveredLink>
-                        <HoveredLink href="/about">Developer</HoveredLink>
+                        <HoveredLink href="/developer">Developer</HoveredLink>
                     </div>
                 </MenuItem>
                 <MenuItem item="User" active={active} setActive={setActive}>
@@ -34,8 +33,6 @@ function Navbar2() {
                             <>
                                 <HoveredLink href="/profile">Profile</HoveredLink>
                                 <HoveredLink href="/profile/edit">Edit</HoveredLink>
-                                <HoveredLink href="/profile/posts">Posts</HoveredLink>
-                                <HoveredLink href="/profile/updateimage">Edit image</HoveredLink>
                                 <HoveredLink href="/contact">Contacts</HoveredLink>
                                 <HoveredLink href="/face">Face Register</HoveredLink>
                                 <button onClick={() => signOut()} className=' bg-red-800 px-3 py-1 rounded-lg cursor-pointer  '>Signout</button>

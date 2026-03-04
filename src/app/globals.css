@@ -151,12 +151,22 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
@@ -173,5 +183,8 @@
 }
 
 .title {
-  font-family: "Mozilla Headline", sans-serif;
+  font-family:  "Sansation","Mozilla Headline", sans-serif !important;
+}
+.Sansation{
+  font-family: "Sansation", sans-serif !important;
 }

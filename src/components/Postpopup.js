@@ -1,10 +1,18 @@
 "use client";
-import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
+import React, { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { IconX, IconArticleOff } from "@tabler/icons-react";
 
 function Postpopup({ onClose, posts }) {
   const modalRef = useRef(null);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   // Handle click outside
   useEffect(() => {
@@ -19,34 +27,90 @@ function Postpopup({ onClose, posts }) {
     };
   }, [onClose]);
 
+  // Handle Escape key
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  const hasPosts = posts?.posts && posts.posts.length > 0;
+
   return (
-    <div className="fixed inset-0 backdrop-blur-2xl w-screen flex items-center justify-center z-1000 bg-opacity-70">
-      <div ref={modalRef} className="relative w-full h-full max-w-3xl bg-white rounded-lg shadow-lg overflow-y-auto pt-15 flex flex-col">
-        <button
-          className="absolute top-4 right-6 text-3xl text-gray-500 hover:text-black focus:outline-none"
-          onClick={onClose}
-          aria-label="Close"
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-999 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+      >
+        <motion.div
+          ref={modalRef}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          className="relative w-full max-w-2xl max-h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         >
-          &times;
-        </button>
-        <h2 className="text-2xl font-bold mb-6 text-center">{posts?.organization_name}&apos;s Posts</h2>
-        {posts && posts.posts && posts.posts.length > 0 ? (
-          <div className="flex flex-wrap gap-6 justify-center">
-            {posts.posts.map((res) => (
-              <div className="shadow border border-gray-300 text-center rounded-2xl max-w-xs flex flex-col p-4 gap-4 relative" key={res._id}>
-                <div className="text-left">
-                  <img src={res.postimage} alt="" className="rounded-2xl object-cover max-h-60 w-full" />
-                  <h5 className="text-sm text-neutral-600 my-2">{res.createdAt?.split("T")[0]}</h5>
-                  <h3>{res.description}</h3>
-                </div>
-              </div>
-            ))}
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
+            <h2 className="font-bold text-lg">
+              {posts?.organization_name}&apos;s Posts
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <IconX size={20} />
+            </button>
           </div>
-        ) : (
-          <p className="text-center text-gray-500">No posts found.</p>
-        )}
-      </div>
-    </div>
+
+          {/* Body */}
+          <div className="flex-1 overflow-y-auto p-5">
+            {hasPosts ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {posts.posts.map((res, i) => (
+                  <motion.div
+                    key={res._id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    className="border border-neutral-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    {res.postimage && (
+                      <img
+                        src={res.postimage}
+                        alt=""
+                        className="w-full h-44 object-cover"
+                        loading="lazy"
+                      />
+                    )}
+                    <div className="p-3">
+                      <p className="text-xs text-neutral-400 mb-1">
+                        {res.createdAt?.split("T")[0]}
+                      </p>
+                      {res.description && (
+                        <p className="text-sm text-neutral-700 line-clamp-3">
+                          {res.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-16 text-neutral-400">
+                <IconArticleOff size={40} stroke={1.5} />
+                <p className="mt-3 text-sm">No posts yet.</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
