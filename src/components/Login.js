@@ -4,6 +4,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import ProviderCard from './ProviderCard';
+import { IconArrowLeft, IconBackpack, IconBackspace } from '@tabler/icons-react';
 
 function Login() {
 
@@ -55,7 +56,7 @@ function Login() {
         <div className=' flex-col '>
             <button onClick={() => router.push('/')} className=' cursor-pointer flex items-center mb-5'>
                 <span className="material-symbols-outlined" style={{ fontSize: '16px', marginRight: "5px" }}>
-                    arrow_back
+                    <IconArrowLeft size={15}/>
                 </span>
                 Home
             </button>

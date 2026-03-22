@@ -12,7 +12,7 @@ const Chatsection = dynamic(() => import("@/components/Chatsection"), {
 
 export default function Page() {
   return (
-    <div className="w-full min-h-screen bg-linear-to-b from-neutral-50 to-white px-3 sm:px-4 pt-10 pb-8">
+    <div className="w-full min-h-100dvh bg-linear-to-b from-neutral-50 to-white px-3 sm:px-4 pt-10 pb-8">
       <div className="max-w-5xl mx-auto">
         
 
@@ -24,7 +24,7 @@ export default function Page() {
         >
           <Suspense
             fallback={
-              <div className="min-h-[55vh] flex items-center justify-center">
+              <div className="min-h-100dvh flex items-center justify-center">
                 <MainLoader />
               </div>
             }

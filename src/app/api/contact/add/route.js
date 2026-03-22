@@ -55,11 +55,9 @@ export async function POST(req) {
 
         await newContact.save();
 
-        // Update sender's contacts - add receiver to sender's contacts
         if (!Array.isArray(sender.contacts)) {
             sender.contacts = [];
         }
-        // Check if receiver ID already exists in sender's contacts
         const senderHasReceiver = sender.contacts.some(contactId => 
             contactId.toString() === receiver._id.toString()
         );
@@ -68,11 +66,9 @@ export async function POST(req) {
         }
         await sender.save();
 
-        // Update receiver's contacts - add sender to receiver's contacts
         if (!Array.isArray(receiver.contacts)) {
             receiver.contacts = [];
         }
-        // Check if sender ID already exists in receiver's contacts
         const receiverHasSender = receiver.contacts.some(contactId => 
             contactId.toString() === sender._id.toString()
         );
